@@ -29,7 +29,7 @@ class CommandeService extends Exception
                 return $id;
             }
             else {
-                throw new Exception(ServiceCommandNotFound());
+                throw new Exception();
             }
     }
 
