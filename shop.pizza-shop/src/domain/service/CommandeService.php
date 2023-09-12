@@ -25,15 +25,15 @@ class CommandeService extends Exception
     }
 
     public function readCommand(string $id){
-            if ($id =  true) {
-                return $id;
-            }
-            else {
-                throw new Exception();
-            }
+           
     }
 
     public function validateCommand(string $id){
-
+        if ($id =  true) {
+            return $id;
+        }
+        else {
+            throw new Exception();
+        }
     }
 }
