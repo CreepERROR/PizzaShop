@@ -14,19 +14,9 @@ interface IcommandeService {
   
     public function readCommand(string $id);
     public function validateCommand(string $id);
+    public function createCommand(string $mail,int $type, int $id, string $size,int $quantity);
 
 }
-
-/* 
-Peut être implémentation d'une interface ou classe pour les données
-*/
-// interface IdataType {
-//     const $date = new \DateTime('now');
-//     private int $type;
-//     private float $totalPrice;
-//     private int $state;
-//     private string $mail;
-// }
 
 class Commande implements IcommandeService
 {
@@ -56,6 +46,22 @@ class Commande implements IcommandeService
         if ($id =  true) {
             return $id;
         }
+    }
+
+    /* Implémentation exo 2 maladroitement */
+    
+    public function createCommand(string $mail, int $delivery, int $id, string $size, int $quantity)
+    {
+        $db = new PDO('mysql:host=pizza-shop.commande.db;dbname=pizza_shop;charset=utf8','pizza_shop','pizza_shop');
+        $stmt = $db->prepare("INSERT INTO commande (mail, livraison, id, taille, quantite)
+        VALUES (:mail, :delivery, :id, :taille, :quantite)");
+        $stmt->bindParam(':mail', $mail);
+        $stmt->bindParam(':delivery', $delivery);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':taille', $size);
+        $stmt->bindParam(':quantite', $quantity);
+        $stmt->execute();
+        $getCommandId = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
         
     
