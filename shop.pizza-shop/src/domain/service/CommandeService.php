@@ -2,38 +2,61 @@
 
 namespace pizzashop\shop\domain\service;
 
-use Exception;
+use PDO;
 use pizzashop\tests\commande\ServiceCommandeTest;
 
-class CommandeService extends Exception
+/*
+Interface de base
+*/
+
+interface IcommandeService {
+
+  
+    public function readCommand(string $id);
+    public function validateCommand(string $id);
+
+}
+
+/* 
+Peut être implémentation d'une interface ou classe pour les données
+*/
+// interface IdataType {
+//     const $date = new \DateTime('now');
+//     private int $type;
+//     private float $totalPrice;
+//     private int $state;
+//     private string $mail;
+// }
+
+class Commande implements IcommandeService
 {
-    private string $id;
-    private $date;
-    private int $type;
-    private float $totalPrice;
-    private int $state;
-    private string $mail;
 
-    public function __construct(string $id, $date, int $type, float $totalPrice, int $state, string $mail)
+    /*
+     PDO pour get les données de l'api et faire ressortir la commande
+    */
+
+    public function readCommand(string $id)
     {
-        $this->id = $id;
-        $this->date = $date;
-        $this->type = $type;
-        $this->totalPrice = $totalPrice;
-        $this->state = $state;
-        $this->mail = $mail;
+        $db = new PDO('mysql:host=pizza-shop.commande.db;dbname=pizza_shop;charset=utf8','pizza_shop','pizza_shop');
+        $getData = $db->prepare('SELECT * FROM command');
+        $getData->execute();
+        $getCommandId = $getData->fetchAll();
+
+        if ($getCommandId == $id){
+            echo $id;
+        }
     }
 
-    public function readCommand(string $id){
-           
-    }
 
-    public function validateCommand(string $id){
+    /*
+    Validation de la commande par l'id
+    */
+    public function validateCommand(string $id)
+    {
         if ($id =  true) {
             return $id;
         }
-        else {
-            throw new Exception();
-        }
     }
+        
+    
 }
