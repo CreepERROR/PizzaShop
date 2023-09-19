@@ -1,2 +1,4 @@
 .idea/
 pizza.shop.components/
+.phpunit.result.cache
+*.env

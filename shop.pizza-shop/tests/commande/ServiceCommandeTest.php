@@ -1,12 +1,13 @@
 <?php
 
-namespace pizzashop\tests\commande;
+namespace commande;
 
 use Faker\Factory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use pizzashop\shop\domain\entities\commande\Commande;
 use pizzashop\shop\domain\entities\commande\Item;
 use Illuminate\Database\Capsule\Manager as DB;
+use pizzashop\shop\domain\service\Interface\ICommandeService;
 
 class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
 
@@ -16,23 +17,23 @@ class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
     private static $serviceCommande;
     private static $faker;
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        $dbcom = __DIR__ . '/../../config/commande.db.test.ini';
-        $dbcat = __DIR__ . '/../../config/catalog.db.ini';
-        $db = new DB();
-        $db->addConnection(parse_ini_file($dbcom), 'commande');
-        $db->addConnection(parse_ini_file($dbcat), 'catalog');
-        $db->setAsGlobal();
-        $db->bootEloquent();
-
-        self::$serviceProduits = new \pizzashop\shop\domain\service\catalogue\ServiceCatalogue();
-        self::$serviceCommande = new \pizzashop\shop\domain\service\commande\ServiceCommande(self::$serviceProduits);
-        self::$faker = Factory::create('fr_FR');
-        self::fill();
-
-    }
+//    public static function setUpBeforeClass(): void
+//    {
+//        parent::setUpBeforeClass();
+//        $dbcom = __DIR__ . '/../../config/commande.db.test.ini';
+//        $dbcat = __DIR__ . '/../../config/catalog.db.ini';
+//        $db = new DB();
+//        $db->addConnection(parse_ini_file($dbcom), 'commande');
+//        $db->addConnection(parse_ini_file($dbcat), 'catalog');
+//        $db->setAsGlobal();
+//        $db->bootEloquent();
+//
+//        self::$serviceProduits = new \pizzashop\shop\domain\service\catalogue\ServiceCatalogue();
+//        self::$serviceCommande = new \pizzashop\shop\domain\service\commande\ServiceCommande(self::$serviceProduits);
+//        self::$faker = Factory::create('fr_FR');
+//        self::fill();
+//
+//    }
 
     public static function tearDownAfterClass(): void
     {
@@ -57,14 +58,17 @@ class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
 
     public function testAccederCommande(){
         //$id = self::$commandeIds[0];
-        foreach (self::$commandeIds as $id){
-            $commandeEntity = Commande::find($id);
-            $commandeDTO = self::$serviceCommande->accederCommande($id);
-            $this->assertNotNull($commandeDTO);
- 
-            // TODO : comparer les données de l'entité et du DTO
+        ICommandeService::getCommandeById('1');
+        $commande = $commandeService->getCommandeById('1');
+        if($commande == null){
+            $this->fail('La commande n\'a pas été trouvée');
         }
 
+    }
+
+    public function testLogs(){
+        // TODO : vérifier que le fichier de log contient bien les logs de la commande créée
+        $commandeService = new CommandService();
 
     }
 
