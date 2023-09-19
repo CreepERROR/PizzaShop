@@ -1,13 +1,13 @@
 <?php
 
-namespace models;
+namespace pizzashop\shop\models;;
 
 use pizzashop\shop\domain\dto\item\ItemDTO;
 
 class Item extends \Illuminate\Database\Eloquent\Model
 {
 
-    protected $connection = 'commande';
+    protected $connection = 'command';
     protected $table = 'item';
     protected $primaryKey = 'id';
     public $timestamps = false;
@@ -15,7 +15,7 @@ class Item extends \Illuminate\Database\Eloquent\Model
 
     public function commande()
     {
-        return $this->belongsTo(Commande::class, 'commande_id');
+        return $this->belongsTo(Command::class, 'commande_id');
     }
 
     public function toDTO() : ItemDTO {

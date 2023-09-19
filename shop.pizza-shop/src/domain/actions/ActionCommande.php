@@ -8,12 +8,12 @@ class ActionCommande implements IcommandeService
 {
 
     /*
-     PDO pour get les données de l'api et faire ressortir la commande
+     PDO pour get les données de l'api et faire ressortir la command
     */
 
     public function readCommand(string $id)
     {
-//        $db = new PDO('mysql:host=pizza-shop.commande.db;dbname=pizza_shop;charset=utf8', 'pizza_shop', 'pizza_shop');
+//        $db = new PDO('mysql:host=pizza-shop.command.db;dbname=pizza_shop;charset=utf8', 'pizza_shop', 'pizza_shop');
 //        $getData = $db->prepare('SELECT * FROM command');
 //        $getData->execute();
 //        $getCommandId = $getData->fetchAll();
@@ -27,7 +27,7 @@ class ActionCommande implements IcommandeService
 //
 //
 //    /*
-//    Validation de la commande par l'id
+//    Validation de la command par l'id
 //    */
 //    public function validateCommand(string $id)
 //    {
@@ -40,8 +40,8 @@ class ActionCommande implements IcommandeService
 //
 //    public function createCommand(string $mail, int $delivery, int $id, string $size, int $quantity)
 //    {
-//        $db = new PDO('mysql:host=pizza-shop.commande.db;dbname=pizza_shop;charset=utf8','pizza_shop','pizza_shop');
-//        $stmt = $db->prepare("INSERT INTO commande (mail, livraison, id, taille, quantite)
+//        $db = new PDO('mysql:host=pizza-shop.command.db;dbname=pizza_shop;charset=utf8','pizza_shop','pizza_shop');
+//        $stmt = $db->prepare("INSERT INTO command (mail, livraison, id, taille, quantite)
 //        VALUES (:mail, :delivery, :id, :taille, :quantite)");
 //        $stmt->bindParam(':mail', $mail);
 //        $stmt->bindParam(':delivery', $delivery);

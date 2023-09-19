@@ -1,10 +1,11 @@
 <?php
 
-namespace pizzashop\shop\domain\service\Catalog;
+namespace pizzashop\shop\domain\service\catalog;
 
 use Exception;
 use models\Catalog;
-
+use models\Product;
+use pizzashop\shop\domain\dto\commande\CommandeDTO;
 use pizzashop\shop\domain\service\Catalog\Interface\ICatalogService;
 use pizzashop\tests\catalog\ServiceCatalogTest;
 
@@ -31,4 +32,9 @@ class CatalogService extends Exception implements ICatalogService
   {
 
   }
+
+    public function readCommand(string $id)
+    {
+        // TODO: Implement readCommand() method.
+    }
 }

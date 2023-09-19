@@ -1,8 +1,8 @@
 <?php
 
-namespace models;
+namespace pizzashop\shop\models;
 use Illuminate\Database\Eloquent\Model;
-class Commande extends Model
+class Command extends Model
 {
     const ETAT_CREE=1;
     const ETAT_VALIDE= 2;
@@ -13,8 +13,8 @@ class Commande extends Model
     const LIVRAISON_A_DOMICILE=3;
 
 
-    protected $connection = 'commande';
-    protected $table = 'commande';
+    protected $connection = 'command';
+    protected $table = 'command';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [ 'delai, date_commande, type_livraison, etat, montant_total, id_client'];

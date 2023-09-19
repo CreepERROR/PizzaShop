@@ -1,6 +1,6 @@
 <?php
 
-namespace models;
+namespace pizzashop\shop\models;;
 use Illuminate\Database\Eloquent\Model;
 use pizzashop\shop\domain\entities\catalogue\Produit;
 

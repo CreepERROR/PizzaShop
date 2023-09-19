@@ -1,7 +1,7 @@
 <?php
 
-namespace pizzashop\shop\domain\service\Catalog\Interface;
-
+namespace pizzashop\shop\domain\service\catalog\Interface;
+use pizzashop\shop\domain\dto\commande\CommandeDTO;
 interface ICatalogService
 {
     public function readCommand(string $id);
