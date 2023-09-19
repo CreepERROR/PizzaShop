@@ -10,10 +10,10 @@ use pizzashop\shop\domain\entities\catalogue\Produit;
 use Faker\Factory;
 use pizzashop\shop\domain\entities\commande\Commande;
 
-$dbcom = __DIR__ . '/../config/commande.db.ini';
+$dbcom = __DIR__ . '/../config/command.db.ini';
 $dbcat = __DIR__ . '/../config/catalog.db.ini';
 $db = new DbManager();
-$db->addConnection(parse_ini_file($dbcom), 'commande');
+$db->addConnection(parse_ini_file($dbcom), 'command');
 $db->addConnection(parse_ini_file($dbcat), 'catalog');
 $db->setAsGlobal();
 $db->bootEloquent();
