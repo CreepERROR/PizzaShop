@@ -10,5 +10,5 @@ return function( \Slim\App $app):void {
         ->setName('creer_commande');
 
     $app->get('/commandes/{id_commande}[/]', \pizzashop\shop\app\actions\AccederCommandeAction::class)
-        ->setName('commande');
+        ->setName('command');
 };

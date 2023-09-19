@@ -1,9 +1,13 @@
 <?php
+
+namespace pizzashop\shop\domain\service\utils;
+
 use Illuminate\Database\Capsule\Manager as DB;
 
 class Eloquent
 {
-    public static function init ($filename) {
+    public static function init($filename)
+    {
 
 
         $db = new DB();
