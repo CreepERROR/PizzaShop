@@ -6,7 +6,7 @@ use PDO;
 use pizzashop\tests\commande\ServiceCommandeTest;
 
 /*
-Interface de base
+Interface de base (exo1 & 2)
 */
 
 interface IcommandeService {
@@ -22,7 +22,7 @@ class Commande implements IcommandeService
 {
 
     /*
-     PDO pour get les données de l'api et faire ressortir la commande
+     PDO pour get les données de l'api et faire ressortir la commande, DTO?
     */
 
     public function readCommand(string $id)
@@ -39,7 +39,7 @@ class Commande implements IcommandeService
 
 
     /*
-    Validation de la commande par l'id
+    Validation de la commande par l'id, doit être remplacé par un DTO
     */
     public function validateCommand(string $id)
     {
@@ -48,8 +48,8 @@ class Commande implements IcommandeService
         }
     }
 
-    /* Implémentation exo 2 maladroitement */
-    
+    /* Implémentation exo 2 maladroitement, remplacé par un DTO */
+
     public function createCommand(string $mail, int $delivery, int $id, string $size, int $quantity)
     {
         $db = new PDO('mysql:host=pizza-shop.commande.db;dbname=pizza_shop;charset=utf8','pizza_shop','pizza_shop');
