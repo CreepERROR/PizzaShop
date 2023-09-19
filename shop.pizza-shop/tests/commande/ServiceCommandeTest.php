@@ -7,7 +7,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use pizzashop\shop\domain\entities\commande\Commande;
 use pizzashop\shop\domain\entities\commande\Item;
 use Illuminate\Database\Capsule\Manager as DB;
-use pizzashop\shop\domain\service\Interface\ICommandeService;
+use pizzashop\shop\domain\service\Interface\ICommandService;
 
 class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
 
@@ -20,16 +20,16 @@ class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
 //    public static function setUpBeforeClass(): void
 //    {
 //        parent::setUpBeforeClass();
-//        $dbcom = __DIR__ . '/../../config/commande.db.test.ini';
+//        $dbcom = __DIR__ . '/../../config/command.db.test.ini';
 //        $dbcat = __DIR__ . '/../../config/catalog.db.ini';
 //        $db = new DB();
-//        $db->addConnection(parse_ini_file($dbcom), 'commande');
+//        $db->addConnection(parse_ini_file($dbcom), 'command');
 //        $db->addConnection(parse_ini_file($dbcat), 'catalog');
 //        $db->setAsGlobal();
 //        $db->bootEloquent();
 //
 //        self::$serviceProduits = new \pizzashop\shop\domain\service\catalogue\ServiceCatalogue();
-//        self::$serviceCommande = new \pizzashop\shop\domain\service\commande\ServiceCommande(self::$serviceProduits);
+//        self::$serviceCommande = new \pizzashop\shop\domain\service\command\ServiceCommande(self::$serviceProduits);
 //        self::$faker = Factory::create('fr_FR');
 //        self::fill();
 //
@@ -52,22 +52,22 @@ class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
     }
     private static function fill() {
 
-   	 	// TODO : créer une commande dans la base pour tester l'accès à une commande
+   	 	// TODO : créer une command dans la base pour tester l'accès à une command
     }
 
 
     public function testAccederCommande(){
         //$id = self::$commandeIds[0];
-        ICommandeService::getCommandeById('1');
+        ICommandService::getCommandeById('1');
         $commande = $commandeService->getCommandeById('1');
         if($commande == null){
-            $this->fail('La commande n\'a pas été trouvée');
+            $this->fail('La command n\'a pas été trouvée');
         }
 
     }
 
     public function testLogs(){
-        // TODO : vérifier que le fichier de log contient bien les logs de la commande créée
+        // TODO : vérifier que le fichier de log contient bien les logs de la command créée
         $commandeService = new CommandService();
 
     }
