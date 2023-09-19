@@ -4,18 +4,32 @@ namespace models;
 use Illuminate\Database\Eloquent\Model;
 class Commande extends Model
 {
-    //delai	tinyint(4) NULL [0]
-    //id	varchar(64)
-    //date_commande	datetime
-    //type_livraison	int(11) [1]
-    //etat	int(11) [1]
-    //montant_total	decimal(10,2) [0.00]
-    //mail_client	varchar(128)
+    const ETAT_CREE=1;
+    const ETAT_VALIDE= 2;
+    const ETAT_PAYE=3;
+    const ETAT_LIVRE=4;
+    const LIVRAISON_SUR_PLACE=1;
+    const LIVRAISON_A_EMPORTER=2;
+    const LIVRAISON_A_DOMICILE=3;
+
+
+    protected $connection = 'commande';
     protected $table = 'commande';
     protected $primaryKey = 'id';
-    protected $fillable = ['delai', 'date_commande', 'type_livraison', 'etat', 'montant_total', 'mail_client'];
     public $timestamps = false;
-    public function commande(): \Illuminate\Database\Eloquent\Relations\BelongsTo {
-        return $this->belongsTo(Commande::class, 'id');
+    protected $fillable = [ 'delai, date_commande, type_livraison, etat, montant_total, id_client'];
+
+    public function calculerMontantTotal(){}
+
+    public function items() {
+        $this->hasMany(Item::class, 'commande_id');
+    }
+
+    public function toDTO() : CommandeDTO{
+        $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison ,$this->mail_client, $this->montant_total, $this->delai, []);
+        foreach ($this->items as $item) {
+            $commandeDTO->addItem($item->toDTO());
+        }
+        return $commandeDTO;
     }
 }
