@@ -14,13 +14,13 @@ class commandDTO extends \pizzashop\shop\domain\dto\DTO
 
 
 
-public function __construct(string $mail,int $delivery_type,float $total_cost,int $state,string $id,string $date)
+public function __construct(string $mail,int $delivery_type,float $total_cost,int $state,string $date)
 {
     $this->mail = $mail;
     $this->delivery_type= $delivery_type;
     $this->total_cost= $total_cost;
     $this->state=$state;
-    $this->id=$id;
+    $this->id= null;
     $this->date=$date;
 }
 
