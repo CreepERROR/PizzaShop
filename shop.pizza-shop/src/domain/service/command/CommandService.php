@@ -39,11 +39,6 @@ class CommandService extends Exception implements ICommandService
     {
 
     }
-
-    public function getCommandeById(string $idCommand)
-    {
-        // TODO: Implement getCommandeById() method.
-    }
 }
 
 
