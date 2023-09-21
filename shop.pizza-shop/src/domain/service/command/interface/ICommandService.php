@@ -2,10 +2,11 @@
 
 namespace pizzashop\shop\domain\service\command\interface;
 
+use pizzashop\shop\domain\dto\commande\CommandeDTO;
+
 interface ICommandService
 {
-    public function getCommandById(string $idCommand );
     public function readCommand(string $id);
     public function validateCommand(string $id);
-    public function createCommand(string $mail,int $type, int $id, string $size,int $quantity);
+    public function createCommand(CommandeDTO $commandeDTO);
 }
