@@ -6,12 +6,13 @@ class categoryDTO
 {
 
     public int $id;
-    /* @param array libelé dto */
+    /**
+     * @var array liste des catégories
+     */
     public array $itemDTO;
 
     /**
-     * @param string $mail_client
-     * @param int $type_livraison
+     * @param int $id
      * @param array $itemDTO
      */
     public function __construct(int $id, array $itemDTO)

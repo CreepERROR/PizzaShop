@@ -10,6 +10,7 @@ $app->addRoutingMiddleware();
 $app->addErrorMiddleware(true, false, false);
 
 
-Eloquent::init(__DIR__ . '/../conf/conf.ini');
+Eloquent::init(__DIR__ . '/../conf/catalog.db.ini.template');
+Eloquent::init(__DIR__ . '/../conf/command.db.ini.template');
 
 return $app;        

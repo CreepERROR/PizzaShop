@@ -22,7 +22,7 @@ class Command extends Model
     public function calculerMontantTotal(){}
 
     public function items() {
-        $this->hasMany(Item::class, 'commande_id');
+        return $this->hasMany(Item::class, 'commande_id');
     }
 
     public function toDTO() : CommandeDTO{
