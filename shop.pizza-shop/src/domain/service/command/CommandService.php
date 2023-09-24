@@ -60,7 +60,7 @@ class CommandService extends Exception implements ICommandService
                 ['state'=> request('created_at')],
             );
             $catalog->items()->get()->toArray();
-            
+            $catalog = array_sum($catalog);
             $create = new CommandeDTO('id','date',$item );
             return $create;
         }
