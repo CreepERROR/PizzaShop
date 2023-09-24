@@ -28,7 +28,7 @@ class CommandService extends Exception implements ICommandService
     }
     public function validateCommand(string $id)
     {
-        // TODO: Implement validateCommand() method.
+        return Command::get($id)->where('id')->get();
     }
     public function readCommand(string $id)
     {
