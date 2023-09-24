@@ -2,6 +2,8 @@
 
 namespace pizzashop\shop\models;
 use Illuminate\Database\Eloquent\Model;
+use pizzashop\shop\domain\dto\commande\CommandeDTO;
+
 class Command extends Model
 {
     const ETAT_CREE=1;
@@ -25,11 +27,27 @@ class Command extends Model
         return $this->hasMany(Item::class, 'commande_id');
     }
 
-    public function toDTO() : CommandeDTO{
+    public function toDTO() : CommandeDTO
+    {
         $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison ,$this->mail_client, $this->montant_total, $this->delai, []);
         foreach ($this->items as $item) {
             $commandeDTO->addItem($item->toDTO());
         }
         return $commandeDTO;
+    }
+
+
+    /* j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
+    public function validate(): CommandeDTO
+    {
+        $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison ,$this->mail_client, $this->montant_total, $this->delai, []);
+        foreach ($this->items as $item) {
+            $commandeDTO->request()->validate([
+                'email'=> [],
+                'type de livraison'=> ['1','2','3'],
+                'item'=>[$item],
+            ]);
+
+        }
     }
 }
