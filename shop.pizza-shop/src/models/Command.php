@@ -44,6 +44,7 @@ class Command extends Model
         foreach ($this->items as $item) {
             $commandeDTO->request()->validate([
                 'email'=> [],
+                'etat'=>['1','2','3','4'],
                 'type de livraison'=> ['1','2','3'],
                 'item'=>[$item],
             ]);
