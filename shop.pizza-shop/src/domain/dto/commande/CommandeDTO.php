@@ -8,6 +8,7 @@ class CommandeDTO
     public string $mail_client;
     public int $type_livraison;
     public array $itemDTO;
+    public int $state = 1;
 
     /**
      * @param string $mail_client

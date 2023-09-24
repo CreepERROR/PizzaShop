@@ -20,6 +20,11 @@ class ProduitDTO extends \pizzashop\shop\domain\dto\DTO
         $this->tarif = $tarif;
     }
 
+    public function getNumeroProduit(): int
+    {
+        return $this->numero_produit;
+    }
+
 
 
 }
