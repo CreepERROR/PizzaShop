@@ -9,6 +9,7 @@ use Monolog\Level;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use pizzashop\shop\domain\dto\commande\CommandeDTO;
+use pizzashop\shop\domain\service\Catalog\CatalogService;
 use pizzashop\shop\domain\service\catalog\Interface\ICatalogService;
 use pizzashop\shop\domain\service\command\interface\ICommandService;
 use pizzashop\shop\models\Command;
@@ -53,7 +54,14 @@ class CommandService extends Exception implements ICommandService
 
         foreach ($commandeDTO->getItems() as $item)
         {
-
+            $catalog = CommandeDTO::updateOrCreate(
+                ['id' =>  request('id')],
+                ['date' => request('date')],
+                ['state'=> request('created_at')],
+            );
+            $catalog->items()->get()->toArray();
+            $create = new CommandeDTO($item);
+            return $create;
         }
 
 
