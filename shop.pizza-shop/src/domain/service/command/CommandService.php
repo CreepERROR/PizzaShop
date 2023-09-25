@@ -16,31 +16,47 @@ use pizzashop\shop\models\Command;
 
 class CommandService extends Exception implements ICommandService
 {
-    /**
-     * Exemple d'utilisation des logs
-     */
-//        $log = new Logger('ServiceCommand');
-//        $log->pushHandler(new StreamHandler(__DIR__ . '/../../../logs/Command/logService.log', Level::Info));
-//        $log->pushHandler(new FirePHPHandler());
-//        $log->info('ServiceCommande : constructeur');
-//
 
-    public function getCommandById(string $idCommande)
-    {
-        return Command::findOrFail($idCommande)->toArray();
-    }
+//    function __construct()
+//    {
+//        $this->log = new Logger('ServiceCommand');
+//        $this->log->pushHandler(new StreamHandler(__DIR__ . '../../../../logs/Command/logService.log', Level::Info));
+//        $this->log->pushHandler(new FirePHPHandler());
+//        $this->log->info('ServiceCommande : constructeur');
+//    }
     public function validateCommand(string $id)
     {
         return Command::get($id)->where('id')->get();
     }
+
     public function readCommand(string $id)
     {
-        //$commande = Command::with('items')->find($id)->toArray();
-        $commande = Command::where('id', '=', $id)->first();
-        $items = $commande->items()->get()->toArray();
+        $log = new Logger('ServiceCommand:readCommand');
+        try {
+            $commande = Command::where('id', '=', $id)->first();
+        } catch (\Error $e) {
+            $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Error));
+            $log->pushHandler(new FirePHPHandler());
+            $log->error('readCommand : ' . $e->getMessage());
+            exit();
+        }
+        try {
+            $items = $commande->items()->get()->toArray();
+        } catch (\Error $e) {
+            $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Error));
+            $log->pushHandler(new FirePHPHandler());
+            $log->error('readCommand : ' . $e->getMessage());
+            exit();
+        }
         $commande = $commande->toArray();
-        $DTOCommande = new CommandeDTO($commande['mail_client'], $commande['type_livraison'],$items);
+        $DTOCommande = new CommandeDTO($commande['id'], $commande['date_commande'], $commande['montant_total'],  $commande['mail_client'], $commande['type_livraison'], $items);
+
+        $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Info));
+        $log->pushHandler(new FirePHPHandler());
+        $log->info('id = ' . $id);
+
         return $DTOCommande;
+
     }
 
     public function createCommand(CommandeDTO $commandeDTO)
@@ -52,20 +68,19 @@ class CommandService extends Exception implements ICommandService
         // Un objet de type CommandeDTO est retourné, incluant toutes les informations disponibles.
         //pour tout les itemsDTO dans le $commandeDto
 
-        foreach ($commandeDTO->getItems() as $item)
-        {
+        foreach ($commandeDTO->getItems() as $item) {
             $catalog = CommandeDTO::updateOrCreate(
-                ['id' =>  request('id')],
+                ['id' => request('id')],
                 ['date' => request('date')],
-                ['state'=> request('created_at')],
+                ['state' => request('created_at')],
             );
             $catalog->items()->get()->toArray();
             $catalog = array_sum($catalog);
-            $create = new CommandeDTO('id','date',$item );
+            $create = new CommandeDTO('id', 'date', $item);
             return $create;
         }
 
-        
+
     }
 }
 

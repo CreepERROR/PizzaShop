@@ -59,12 +59,7 @@ class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
         //$id = self::$commandeIds[0];
         $commandeService = new CommandService();
         $commande = $commandeService->readCommand('112e7ee1-3e8d-37d6-89cf-be3318ad6368');
-        if($commande == null){
-            $this->fail('La command n\'a pas été trouvée');
-        }else{
-            $this->assertEquals('112e7ee1-3e8d-37d6-89cf-be3318ad6368', $commande['id']);
-        }
-
+        $this->assertEquals('112e7ee1-3e8d-37d6-89cf-be3318ad6368', $commande->id);
     }
 
     public function testLogs(){

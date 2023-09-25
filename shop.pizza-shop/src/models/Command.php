@@ -18,6 +18,7 @@ class Command extends Model
     protected $connection = 'command';
     protected $table = 'command';
     protected $primaryKey = 'id';
+    protected $keyType = 'string';
     public $timestamps = false;
     protected $fillable = [ 'delai, date_commande, type_livraison, etat, montant_total, id_client'];
 
