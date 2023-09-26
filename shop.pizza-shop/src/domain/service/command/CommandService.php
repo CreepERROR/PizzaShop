@@ -64,7 +64,7 @@ class CommandService extends Exception implements ICommandService
         // interroge le service Catalogue pour obtenir des informations sur chaque produit commandé.
         // La commande est créée : un identifiant est créé, la date de commande est enregistrée, l'état initial
         // de la commande est CREE.
-        // Le montant total de la commande est calculé.//TODO
+        // Le montant total de la commande est calculé.//
         // Un objet de type CommandeDTO est retourné, incluant toutes les informations disponibles.
         //pour tout les itemsDTO dans le $commandeDto
 
