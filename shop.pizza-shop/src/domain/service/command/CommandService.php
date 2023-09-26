@@ -2,6 +2,7 @@
 
 namespace pizzashop\shop\domain\service\command;
 
+use commande\ServiceCommandeTest as CommandeServiceCommandeTest;
 use Exception;
 
 use Monolog\Handler\FirePHPHandler;
@@ -95,6 +96,7 @@ class CommandService extends Exception implements ICommandService
 
         }
     }
+    
 }
 
 
