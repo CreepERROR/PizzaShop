@@ -79,8 +79,6 @@ class CommandService extends Exception implements ICommandService
             $create = new CommandeDTO('id', 'date', $item);
             return $create;
         }
-
-
     }
 
     /* j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
