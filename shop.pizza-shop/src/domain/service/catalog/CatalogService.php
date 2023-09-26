@@ -16,11 +16,10 @@ use Monolog\Handler\StreamHandler;
 
 class CatalogService extends Exception implements ICatalogService
 {
+
   public function readCatalog(CommandeDTO $CommandeDTO)
   {
-    $product = New Product();
-    $product = Product::with('categorie', 'tailles')->find($productId);
-    
+
   }
 
   public function validateCommand(string $id)
@@ -30,7 +29,7 @@ class CatalogService extends Exception implements ICatalogService
 
   public function createCommand(CommandeDTO $CommandeDTO)
   {
-
+    // TODO: Implement createCommand() method.
   }
 
     public function readCommand(string $id)

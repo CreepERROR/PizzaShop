@@ -24,11 +24,22 @@ class CommandService extends Exception implements ICommandService
 //        $this->log->pushHandler(new FirePHPHandler());
 //        $this->log->info('ServiceCommande : constructeur');
 //    }
+
+    /**
+     * prend un id et retourne un commandeDTO
+     * @param string $id
+     * @return mixed
+     */
     public function validateCommand(string $id)
     {
         return Command::get($id)->where('id')->get();
     }
 
+    /**
+     * prend un id et rend un commandeDTO
+     * @param string $id
+     * @return CommandeDTO|void
+     */
     public function readCommand(string $id)
     {
         $log = new Logger('ServiceCommand:readCommand');
@@ -59,6 +70,12 @@ class CommandService extends Exception implements ICommandService
 
     }
 
+
+    /**
+     * prend un commandeDTO et retourne un commandeDTO
+     * @param CommandeDTO $commandeDTO
+     * @return CommandeDTO|void
+     */
     public function createCommand(CommandeDTO $commandeDTO)
     {
         // interroge le service Catalogue pour obtenir des informations sur chaque produit commandé.
@@ -81,7 +98,13 @@ class CommandService extends Exception implements ICommandService
         }
     }
 
-    /* j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
+    // j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
+    /**
+     * PAS SÛRE
+     * prend un commandeDTO et retourne un commandeDTO
+     * @param CommandeDTO $commandeDTO
+     * @return CommandeDTO|void
+     */
     public function validate(): CommandeDTO
     {
         $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison ,$this->mail_client, $this->montant_total, $this->delai, []);
