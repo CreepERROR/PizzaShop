@@ -17,27 +17,32 @@ use pizzashop\shop\models\Command;
 
 class CommandService extends Exception implements ICommandService
 {
-
-//    function __construct()
-//    {
-//        $this->log = new Logger('ServiceCommand');
-//        $this->log->pushHandler(new StreamHandler(__DIR__ . '../../../../logs/Command/logService.log', Level::Info));
-//        $this->log->pushHandler(new FirePHPHandler());
-//        $this->log->info('ServiceCommande : constructeur');
-//    }
-
     /**
-     * prend un id et retourne un commandeDTO
+     * Valide une commande en mettant son etat à 2.
      * @param string $id
      * @return mixed
      */
     public function validateCommand(string $id)
     {
-        return Command::get($id)->where('id')->get();
+        $log = new Logger('ServiceCommand:validateCommand');
+        try {
+            $commande = Command::where('id', '=', $id);
+            $commande->update(['etat' => 2]);
+            $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Info));
+            $log->pushHandler(new FirePHPHandler());
+            $log->info('ValidateCommande: id = ' . $id . ' and state =' . $commande->etat);
+
+        } catch (\Exception $e) {
+            $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Error));
+            $log->pushHandler(new FirePHPHandler());
+            $log->error('invalidateCommand : ' . $e->getMessage());
+            exit();
+        }
+        return $this->readCommand($id);
     }
 
     /**
-     * prend un id et rend un commandeDTO
+     * Prend un id et rend un commandeDTO
      * @param string $id
      * @return CommandeDTO|void
      */
@@ -61,8 +66,7 @@ class CommandService extends Exception implements ICommandService
             exit();
         }
         $commande = $commande->toArray();
-        $DTOCommande = new CommandeDTO($commande['id'], $commande['date_commande'], $commande['montant_total'],  $commande['mail_client'], $commande['type_livraison'], $items);
-
+        $DTOCommande = new CommandeDTO($commande['id'], $commande['date_commande'], $commande['montant_total'], $commande['etat'], $commande['mail_client'], $commande['type_livraison'], $items);
         $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Info));
         $log->pushHandler(new FirePHPHandler());
         $log->info('id = ' . $id);
@@ -70,10 +74,26 @@ class CommandService extends Exception implements ICommandService
         return $DTOCommande;
 
     }
+// Utilisé pour les test Uniquement
+    public function invalidateCommande(string $id)
+    {
+        $log = new Logger('ServiceCommand:validateCommand');
+        try {
+            Command::where('id', '=', $id)->update(['etat' => 1]);
+            $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Info));
+            $log->pushHandler(new FirePHPHandler());
+            $log->info('ValidateCommande: id = ' . $id);
+        } catch (\Error $e) {
+            $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Error));
+            $log->pushHandler(new FirePHPHandler());
+            $log->error('validateCommand : ' . $e->getMessage());
+            exit();
+        }
+    }
 
 
     /**
-     * prend un commandeDTO et retourne un commandeDTO
+     * Créer une commande dans la BDD
      * @param CommandeDTO $commandeDTO
      * @return CommandeDTO|void
      */
@@ -101,25 +121,24 @@ class CommandService extends Exception implements ICommandService
 
     // j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
     /**
-     * PAS SÛRE
-     * prend un commandeDTO et retourne un commandeDTO
+     * Valide une commande
      * @param CommandeDTO $commandeDTO
      * @return CommandeDTO|void
      */
     public function validate(): CommandeDTO
     {
-        $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison ,$this->mail_client, $this->montant_total, $this->delai, []);
+        $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison, $this->mail_client, $this->montant_total, $this->delai, []);
         foreach ($this->items as $item) {
             $commandeDTO->request()->validate([
-                'email'=> [],
-                'etat'=>['1','2','3','4'],
-                'type de livraison'=> ['1','2','3'],
-                'item'=>[$item],
+                'email' => [],
+                'etat' => ['1', '2', '3', '4'],
+                'type de livraison' => ['1', '2', '3'],
+                'item' => [$item],
             ]);
 
         }
     }
-    
+
 }
 
 

@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Illuminate\Database\Capsule\Manager as DB;
 use pizzashop\shop\domain\service\command\CommandService;
 use pizzashop\shop\domain\service\command\interface\ICommandService;
+use pizzashop\shop\domain\service\utils\Eloquent;
 
 class ServiceCommandeTest extends TestCase {
     private static $commandeIds = [];
@@ -55,16 +56,26 @@ class ServiceCommandeTest extends TestCase {
     }
 
 
-    public function testAccederCommande(){
+    public function testReadCommande(){
         //$id = self::$commandeIds[0];
         $commandeService = new CommandService();
         $commande = $commandeService->readCommand('112e7ee1-3e8d-37d6-89cf-be3318ad6368');
         $this->assertEquals('112e7ee1-3e8d-37d6-89cf-be3318ad6368', $commande->id);
     }
 
-    public function testLogs(){
-        // TODO : vérifier que le fichier de log contient bien les logs de la command créée
+    /**
+     * @return void
+     */
+    public function testValiderCommande(){
+        //$id = self::$commandeIds[0];
         $commandeService = new CommandService();
+        $commandeUpdated = $commandeService->validateCommand('112e7ee1-3e8d-37d6-89cf-be3318ad6368');
+        $this->assertEquals(2, $commandeUpdated->state);
+        $commandeService->invalidateCommande('112e7ee1-3e8d-37d6-89cf-be3318ad6368');
+        $commande = $commandeService->readCommand('112e7ee1-3e8d-37d6-89cf-be3318ad6368');
+        $this->assertEquals(1, $commande->state);
+    }
+    function testExeption(){
 
     }
     public function testValiderCommande(){
