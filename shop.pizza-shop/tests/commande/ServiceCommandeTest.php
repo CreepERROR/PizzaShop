@@ -2,14 +2,14 @@
 
 namespace commande;
 
-
+use \PHPUnit\Framework\TestCase;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Illuminate\Database\Capsule\Manager as DB;
 use pizzashop\shop\domain\service\command\CommandService;
 use pizzashop\shop\domain\service\command\interface\ICommandService;
 
-class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
+class ServiceCommandeTest extends TestCase {
     private static $commandeIds = [];
     private static $itemIds = [];
     private static $serviceProduits;
@@ -67,5 +67,11 @@ class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
         $commandeService = new CommandService();
 
     }
+    public function testValiderCommande(){
+        $commandeService = new CommandService();
+        $commande = $commandeService->validate('16+1696zzdz5dZ5D5z');
+        $this->assertNotNull('16+1696zzdz5dZ5D5z');
+        return $commande;
 
+    }
 }
