@@ -38,18 +38,5 @@ class Command extends Model
     }
 
 
-    /* j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
-    public function validate(): CommandeDTO
-    {
-        $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison ,$this->mail_client, $this->montant_total, $this->delai, []);
-        foreach ($this->items as $item) {
-            $commandeDTO->request()->validate([
-                'email'=> [],
-                'etat'=>['1','2','3','4'],
-                'type de livraison'=> ['1','2','3'],
-                'item'=>[$item],
-            ]);
-
-        }
-    }
+    
 }
