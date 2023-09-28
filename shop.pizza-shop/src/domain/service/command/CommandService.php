@@ -18,7 +18,7 @@ use pizzashop\shop\models\Command;
 class CommandService extends Exception implements ICommandService
 {
     /**
-     * Valide une commande en mettant son etat à 2.
+     * Valide une commande en passant son état à VALIDE (2)
      * @param string $id
      * @return mixed
      */
@@ -42,7 +42,7 @@ class CommandService extends Exception implements ICommandService
     }
 
     /**
-     * Prend un id et rend un commandeDTO
+     * Recherche une commande et ses items associés
      * @param string $id
      * @return CommandeDTO|void
      */
@@ -75,6 +75,11 @@ class CommandService extends Exception implements ICommandService
 
     }
 // Utilisé pour les test Uniquement
+
+    /**
+     * Tests uniquement, Invalide une commande en mettant son etat à 1.
+     * @param string $id
+     */
     public function invalidateCommande(string $id)
     {
         $log = new Logger('ServiceCommand:validateCommand');
@@ -93,12 +98,13 @@ class CommandService extends Exception implements ICommandService
 
 
     /**
-     * Créer une commande dans la BDD
+     * Crée une commande dans la BDD
      * @param CommandeDTO $commandeDTO
      * @return CommandeDTO|void
      */
     public function createCommand(CommandeDTO $commandeDTO)
     {
+        // paramètres = CommandeDTO avec mail client, type livraison, liste items commandés (numéro, taille, quantité).
         // interroge le service Catalogue pour obtenir des informations sur chaque produit commandé.
         // La commande est créée : un identifiant est créé, la date de commande est enregistrée, l'état initial
         // de la commande est CREE.
@@ -121,7 +127,7 @@ class CommandService extends Exception implements ICommandService
 
     // j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
     /**
-     * Valide une commande
+     * Valide les données d'une commande
      * @param CommandeDTO $commandeDTO
      * @return CommandeDTO|void
      */
