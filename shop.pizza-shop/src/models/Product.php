@@ -13,12 +13,12 @@ class Product extends Model
 
     public function categorie(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Categorie::class, 'categorie_id');
+        return $this->belongsTo(Category::class, 'categorie_id');
     }
 
     public function tailles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Taille::class, 'tarif', 'produit_id', 'taille_id')
+        return $this->belongsToMany(Size::class, 'tarif', 'produit_id', 'taille_id')
             ->withPivot('tarif');
     }
 }

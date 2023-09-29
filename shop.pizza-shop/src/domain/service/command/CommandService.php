@@ -20,7 +20,7 @@ class CommandService extends Exception implements ICommandService
     /**
      * Valide une commande en passant son état à VALIDE (2)
      * @param string $id
-     * @return mixed
+     * @return CommandeDTO|void
      */
     public function validateCommand(string $id)
     {
@@ -127,7 +127,7 @@ class CommandService extends Exception implements ICommandService
 
     // j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
     /**
-     * Valide les données d'une commande
+     * Vérifie si les données d'une commande sont valides
      * @param CommandeDTO $commandeDTO
      * @return CommandeDTO|void
      */
