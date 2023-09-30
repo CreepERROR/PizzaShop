@@ -12,7 +12,7 @@ class CommandeDTO
     public int $type_livraison;
     public array $itemDTO;
 
-    public int $state = 1;
+    public int $state;
 
     /**
      * @param string $id
@@ -22,7 +22,7 @@ class CommandeDTO
      * @param int $type_livraison
      * @param array $itemDTO
      */
-    public function __construct(string $id, $date_commande, $montant_total ,string $mail_client, int $type_livraison, array $itemDTO)
+    public function __construct(string $id, $date_commande, float $montant_total, int $state, string $mail_client, int $type_livraison, array $itemDTO)
     {
         $this->mail_client = $mail_client;
         $this->type_livraison = $type_livraison;
@@ -30,6 +30,7 @@ class CommandeDTO
         $this->id = $id;
         $this->date_commande = $date_commande;
         $this->montant_total = $montant_total;
+        $this->state = $state;
     }
 
     public function getItems()
