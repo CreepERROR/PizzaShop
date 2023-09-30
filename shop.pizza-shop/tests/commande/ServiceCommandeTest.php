@@ -2,14 +2,14 @@
 
 namespace commande;
 
-use \PHPUnit\Framework\TestCase;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Illuminate\Database\Capsule\Manager as DB;
 use pizzashop\shop\domain\service\command\CommandService;
 use pizzashop\shop\domain\service\command\interface\ICommandService;
 
-class ServiceCommandeTest extends TestCase {
+class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
+    
     private static $commandeIds = [];
     private static $itemIds = [];
     private static $serviceProduits;
