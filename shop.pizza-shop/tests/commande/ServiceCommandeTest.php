@@ -5,6 +5,7 @@ namespace commande;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Illuminate\Database\Capsule\Manager as DB;
+use pizzashop\shop\domain\dto\commande\CommandeDTO;
 use pizzashop\shop\domain\service\command\CommandService;
 use pizzashop\shop\domain\service\command\interface\ICommandService;
 use pizzashop\shop\domain\service\utils\Eloquent;
@@ -75,8 +76,11 @@ class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
         $commande = $commandeService->readCommand('112e7ee1-3e8d-37d6-89cf-be3318ad6368');
         $this->assertEquals(1, $commande->state);
     }
-    function testExeption(){
-
+    function testCreateCommande(){
+        $commandeDTO = new CommandeDTO('ThéodoreLeger@sfr.fr', 3, [['numero' => 1, 'taille' => 1, 'quantite' => 1], ['numero' => 2, 'taille' => 1, 'quantite' => 1]]);
+        $commandeService = new CommandService();
+        $commande = $commandeService->createCommand($commandeDTO);
+        $this->assertNotNull($commande->id);
     }
 
 }

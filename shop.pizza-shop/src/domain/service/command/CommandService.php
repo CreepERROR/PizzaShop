@@ -14,6 +14,8 @@ use pizzashop\shop\domain\service\Catalog\CatalogService;
 use pizzashop\shop\domain\service\catalog\Interface\ICatalogService;
 use pizzashop\shop\domain\service\command\interface\ICommandService;
 use pizzashop\shop\models\Command;
+use Ramsey\Uuid\Uuid;
+use Respect\Validation\Validator;
 
 class CommandService extends Exception implements ICommandService
 {
@@ -111,18 +113,27 @@ class CommandService extends Exception implements ICommandService
         // Le montant total de la commande est calculé.//
         // Un objet de type CommandeDTO est retourné, incluant toutes les informations disponibles.
         //pour tout les itemsDTO dans le $commandeDto
-
+        $montantTotal = 0;
         foreach ($commandeDTO->getItems() as $item) {
-            $catalog = CommandeDTO::updateOrCreate(
-                ['id' => request('id')],
-                ['date' => request('date')],
-                ['state' => request('created_at')],
-            );
-            $catalog->items()->get()->toArray();
-            $catalog = array_sum($catalog);
-            $create = new CommandeDTO('id', 'date', $item);
-            return $create;
+            $numero = $item['numero'];
+            $taille = $item['taille'];
+            $catalog = new CatalogService();
+            $item = $catalog->getInformations($numero, $taille);
+            $montantTotal += $item['prix'] * $item['quantite'];
         }
+
+        $id = Uuid::uuid4();
+            Command::create([
+                'id' => $id,
+                'date_commande' => date('Y-m-d H:i:s'),
+                'montant_total' => $montantTotal,
+                'etat' => 1,
+                'mail_client' => $commandeDTO->mail_client,
+                'type_livraison' => $commandeDTO->type_livraison,
+            ]);
+        return $this->readCommand($id);
+
+
     }
 
     // j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
@@ -136,7 +147,7 @@ class CommandService extends Exception implements ICommandService
         $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison, $this->mail_client, $this->montant_total, $this->delai, []);
         foreach ($this->items as $item) {
             $commandeDTO->request()->validate([
-                'email' => [],
+                'email' => Validator::email(),
                 'etat' => ['1', '2', '3', '4'],
                 'type de livraison' => ['1', '2', '3'],
                 'item' => [$item],
