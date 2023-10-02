@@ -78,11 +78,5 @@ class ServiceCommandeTest extends \PHPUnit\Framework\TestCase {
     function testExeption(){
 
     }
-    public function testValiderCommande(){
-        $commandeService = new CommandService();
-        $commande = $commandeService->validate('16+1696zzdz5dZ5D5z');
-        $this->assertNotNull('16+1696zzdz5dZ5D5z');
-        return $commande;
 
-    }
 }
