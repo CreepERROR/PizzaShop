@@ -1,6 +1,7 @@
 <?php
 
 namespace pizzashop\shop\routes;
+
 use Illuminate\Database\Eloquent\Model;
 use PDOException;
 use pizzashop\shop\models\Command;
@@ -35,6 +36,7 @@ $app->get('../commande/{ID-COMMANDE}', function (Request $request, Response $res
         ->withStatus('500');
     }
     
-})
+});
 
+$app->run();
 ?>
