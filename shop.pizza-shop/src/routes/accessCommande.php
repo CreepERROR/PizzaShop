@@ -31,6 +31,7 @@ $app->get('../commande/{ID-COMMANDE}', function (Request $request, Response $res
         $response->getBody()->write(json_encode($error));
         return $response
         ->withHeader('content-type','application/json')
+        ->withStatus('404')
         ->withStatus('500');
     }
     
