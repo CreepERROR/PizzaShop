@@ -136,24 +136,27 @@ class CommandService extends Exception implements ICommandService
 
     }
 
-    // j'ai essayé de faire l'exo 4 avec la commande request et validate mais je suis vraiment pas sur d'ou le placer etc */
     /**
-     * Vérifie si les données d'une commande sont valides
+     * Vérif que les contraintes sont bien respectées
+     * @param ValidatorInterface $validator
      * @param CommandeDTO $commandeDTO
-     * @return CommandeDTO|void
+     * @return Response
      */
-    public function validate(): CommandeDTO
+    public function validateDataCommand(ValidatorInterface $validator, CommandeDTO $commandeDTO): Response
     {
-        $commandeDTO = new CommandeDTO($this->id, $this->date_commande, $this->type_livraison, $this->mail_client, $this->montant_total, $this->delai, []);
-        foreach ($this->items as $item) {
-            $commandeDTO->request()->validate([
-                'email' => Validator::email(),
-                'etat' => ['1', '2', '3', '4'],
-                'type de livraison' => ['1', '2', '3'],
-                'item' => [$item],
-            ]);
+        $errors = $validator->validate($commandeDTO);
+        if (count($errors) > 0) {
+            /*
+             * Uses a __toString method on the $errors variable which is a
+             * ConstraintViolationList object. This gives us a nice string
+             * for debugging.
+             */
+            $errorsString = (string) $errors;
 
+            return new Response($errorsString);
         }
+
+        return new Response('La commande est validée !!');
     }
 
 }
