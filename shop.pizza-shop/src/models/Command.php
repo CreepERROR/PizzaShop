@@ -14,13 +14,11 @@ class Command extends Model
     const LIVRAISON_A_EMPORTER=2;
     const LIVRAISON_A_DOMICILE=3;
 
-
-    protected $connection = 'command';
-    protected $table = 'command';
+    protected $table = 'commande';
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $timestamps = false;
-    protected $fillable = [ 'delai, date_commande, type_livraison, etat, montant_total, id_client'];
+    protected $fillable = ['delai', 'date_commande', 'type_livraison', 'etat', 'montant_total', 'id_client'];
 
     public function calculerMontantTotal(){}
 

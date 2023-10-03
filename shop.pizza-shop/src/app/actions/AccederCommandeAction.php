@@ -1,29 +1,30 @@
 <?php
 
-namespace minipress\api\actions;
+namespace pizzashop\shop\app\actions;
 
+use pizzashop\shop\domain\service\command\CommandService;
+use pizzashop\shop\domain\service\exception\CommandeNotFoundException;
+use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
-abstract class AccederCommandeAction
+class AccederCommandeAction
 {
-    public function __invoke($request, $response, $args)
+    public function __invoke(Request $request, Response $response, $args): Response
     {
-        $id = $args['id'];
-        $serviceCommande = new CommandeService();
+        $id = $args['id_commande'];
+        $serviceCommande = new CommandService();
         try {
-            $commande = $serviceCommande->getCommandeById($id);
+            $commande = $serviceCommande->readCommand($id);
         } catch (CommandeNotFoundException $e) {
             throw new HttpInternalServerErrorException($request, $e->getMessage());
         }
-
-        $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
         $commandeFormated = [
             $commande,
             'links' => [
                 'commandes' => [
-                    'href' => $routeParser->urlFor('commandes')
+                    'href' => '/commandes' // Utilisez l'URL relative directement
                 ]
             ],
         ];
@@ -41,6 +42,5 @@ abstract class AccederCommandeAction
 
         // Définir le type de contenu de la réponse comme JSON
         return $response->withHeader('Content-Type', 'application/json');
-
     }
 }

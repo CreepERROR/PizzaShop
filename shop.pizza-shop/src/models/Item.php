@@ -6,8 +6,6 @@ use pizzashop\shop\domain\dto\item\ItemDTO;
 
 class Item extends \Illuminate\Database\Eloquent\Model
 {
-
-    protected $connection = 'command';
     protected $table = 'item';
     protected $primaryKey = 'id';
     public $timestamps = false;

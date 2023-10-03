@@ -68,7 +68,7 @@ class CommandService extends Exception implements ICommandService
             exit();
         }
         $commande = $commande->toArray();
-        $DTOCommande = new CommandeDTO($commande['id'], $commande['date_commande'], $commande['montant_total'], $commande['etat'], $commande['mail_client'], $commande['type_livraison'], $items);
+        $DTOCommande = new CommandeDTO($commande['mail_client'], $commande['type_livraison'], $items, $commande['id'], $commande['date_commande'], $commande['montant_total'], $commande['etat']);
         $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Info));
         $log->pushHandler(new FirePHPHandler());
         $log->info('id = ' . $id);

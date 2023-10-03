@@ -8,10 +8,9 @@ class Eloquent
 {
     public static function init($filename)
     {
-
-
+        $test=realpath("../config/$filename");
         $db = new DB();
-        $db->addConnection(parse_ini_file($filename));
+        $db->addConnection(parse_ini_file($test));
         $db->setAsGlobal();
         $db->bootEloquent();
 
