@@ -2,13 +2,14 @@
 
 namespace pizzashop\shop\app\actions;
 
+use minipress\api\actions\AbstractAction;
 use pizzashop\shop\domain\service\command\CommandService;
 use pizzashop\shop\domain\service\exception\CommandeNotFoundException;
 use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
-class AccederCommandeAction
+class AccederCommandeAction extends AbstractAction
 {
     public function __invoke(Request $request, Response $response, $args): Response
     {
