@@ -5,10 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 use pizzashop\shop\models\Command;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use Slim\Factory\AppFactory;
 
 require 'vendor/autoload.php';
 
-$app = new \Slim\App($responseFactory);
+$app = AppFactory::create();
 
 $app->patch('.../commandes/{ ID-COMMANDE }', function ($request, $response, $args) {
     $userId = $args['id'];
