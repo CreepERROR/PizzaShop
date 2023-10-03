@@ -16,7 +16,7 @@ class AccederCommandeAction extends AbstractAction
         $id = $args['id_commande'];
         $serviceCommande = new CommandService();
         try {
-            $commande = $serviceCommande->validateCommand($id);
+            $commande = $serviceCommande->readCommand($id);
         } catch (CommandeNotFoundException $e) {
             throw new HttpInternalServerErrorException($request, $e->getMessage());
         }
