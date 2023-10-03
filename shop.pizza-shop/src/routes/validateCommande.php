@@ -11,7 +11,7 @@ require 'vendor/autoload.php';
 
 $app = AppFactory::create();
 
-$app->patch('.../commandes/{ ID-COMMANDE }', function ($request, $response, $args) {
+$app->patch('.../commande/{ID}', function ($request, $response, $args) {
     $userId = $args['id'];
     $requestData = $request->getParsedBody();
 

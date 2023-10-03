@@ -14,13 +14,14 @@ require '../vendor/autoload.php';
 
 $app = AppFactory::create();
 
-$app->get('../commande/{ID-COMMANDE}', function (Request $request, Response $response){
+$app->get('../commande/{ID}', function ($request, $response){
     $access = Command::where('id', '=', $request)->first();
     try
     {
         $id = isset($access['id']);
         $response->getBody()->write("id : $id");
-        return $response
+        $data = $response->withJson($access);
+        return $data
         ->withHeader('content-type','application/json')
         ->withStatus('200');
     }
