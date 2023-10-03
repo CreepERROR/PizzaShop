@@ -13,9 +13,6 @@ return function(App $app) {
     $app->get('/commandes/{id_commande}[/]', AccederCommandeAction::class)
         ->setName('commandes');
 
-    $app->patch('.../commande/{ID}', Command::class)
-    ->withJson($commandeDTO)->withStatus(200)
-    ->withStatus(404)->withJson(['message' => 'Utilisateur non trouvé'])
-    ->withStatus(400)->withJson(['message' => 'Requête invalide'])
-    ->withStatus(500)->withJson(['message' => 'Erreur interne du serveur']);
+    $app->patch('.../commande/{ID}', Command::class);
+    
 };
