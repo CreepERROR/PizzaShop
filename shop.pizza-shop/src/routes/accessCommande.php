@@ -7,11 +7,11 @@ use PDOException;
 use pizzashop\shop\models\Command;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use Slim\Factory\AppFactory;
+use Slim\App;
 
 require '../vendor/autoload.php';
 
-$app = new \Slim\App();
+$app = new App($respnseFactory);
 
 $app->get('../commande/{ID-COMMANDE}', function (Request $request, Response $response){
     $access = Command::where('id', '=', $request)->first();
