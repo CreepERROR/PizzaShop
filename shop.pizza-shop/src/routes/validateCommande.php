@@ -8,7 +8,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require 'vendor/autoload.php';
 
-$app = new \Slim\App();
+$app = new \Slim\App($responseFactory);
 
 $app->patch('.../commandes/{ ID-COMMANDE }', function ($request, $response, $args) {
     $userId = $args['id'];
