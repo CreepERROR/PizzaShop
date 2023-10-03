@@ -2,7 +2,7 @@
 
 namespace pizzashop\shop\app\actions;
 
-use minipress\api\actions\AbstractAction;
+use pizzashop\shop\app\actions\AbstractAction;
 use pizzashop\shop\domain\service\command\CommandService;
 use pizzashop\shop\domain\service\exception\CommandeNotFoundException;
 use Slim\Exception\HttpInternalServerErrorException;
@@ -16,11 +16,10 @@ class AccederCommandeAction extends AbstractAction
         $id = $args['id_commande'];
         $serviceCommande = new CommandService();
         try {
-            $commande = $serviceCommande->readCommand($id);
+            $commande = $serviceCommande->validateCommand($id);
         } catch (CommandeNotFoundException $e) {
             throw new HttpInternalServerErrorException($request, $e->getMessage());
         }
-
         $commandeFormated = [
             $commande,
             'links' => [

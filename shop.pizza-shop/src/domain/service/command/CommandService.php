@@ -32,8 +32,7 @@ class CommandService extends Exception implements ICommandService
             $commande->update(['etat' => 2]);
             $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Info));
             $log->pushHandler(new FirePHPHandler());
-            $log->info('ValidateCommande: id = ' . $id . ' and state =' . $commande->etat);
-
+            //$log->info('ValidateCommande: id = ' . $id . ' and state =' . $commande->etat);
         } catch (\Exception $e) {
             $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Error));
             $log->pushHandler(new FirePHPHandler());
