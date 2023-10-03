@@ -1,6 +1,6 @@
 <?php
 
-namespace minipress\api\actions;
+namespace pizzashop\shop\app\actions;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;

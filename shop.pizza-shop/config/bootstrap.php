@@ -1,6 +1,7 @@
 <?php
 
-use pizzashop\shop\domain\service\utils\Eloquent;
+//use pizzashop\shop\domain\service\utils\Eloquent;
+use Illuminate\Database\Capsule\Manager as Eloquent;
 use Slim\Factory\AppFactory as Factory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
@@ -11,8 +12,12 @@ $app->addRoutingMiddleware();
 $app->addErrorMiddleware(true, false, false);
 $twig = Twig::create('../src/templates',['cache'=>'cache/','auto_reload'=>true]);
 
-Eloquent::init('catalog.db.ini');
-Eloquent::init('commande.db.ini');
+$eloquent = new Eloquent();
+$eloquent->addConnection(parse_ini_file(__DIR__ . '/commande.db.ini'), 'commande');
+$eloquent->addConnection(parse_ini_file(__DIR__ . '/catalog.db.ini'), 'catalog');
+$eloquent->setAsGlobal();
+$eloquent->bootEloquent();
+
 $app->add(TwigMiddleware::create($app,$twig));
 
 //$settings = require_once __DIR__ . '/settings.php';

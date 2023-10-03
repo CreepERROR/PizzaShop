@@ -22,8 +22,12 @@ class CatalogService extends Exception implements ICatalogService
    */
   public function getInformations(string $num, int $taille)
   {
-      $product = Product::where('numero', '=', $num)->first()->toArray();
-      echo $product;
+      $product = Product::select('produit.*', 'tarif.tarif', 'categorie.libelle as categorie_libelle')
+          ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
+          ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
+          ->where('produit.numero', $num)
+          ->first()->toArray();
+        return $product;
   }
 
 }
