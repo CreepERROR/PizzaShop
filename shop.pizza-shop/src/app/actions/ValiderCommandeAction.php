@@ -15,7 +15,7 @@ class AccederCommandeAction
         $id = $args['id_commande'];
         $serviceCommande = new CommandService();
         try {
-            $commande = $serviceCommande->readCommand($id);
+            $commande = $serviceCommande->validateCommand($id);
         } catch (CommandeNotFoundException $e) {
             throw new HttpInternalServerErrorException($request, $e->getMessage());
         }
