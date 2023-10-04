@@ -14,6 +14,8 @@ use pizzashop\shop\domain\service\Catalog\CatalogService;
 use pizzashop\shop\domain\service\catalog\Interface\ICatalogService;
 use pizzashop\shop\domain\service\command\interface\ICommandService;
 use pizzashop\shop\models\Command;
+use pizzashop\shop\models\Item;
+use pizzashop\shop\models\Size;
 use Ramsey\Uuid\Uuid;
 use Respect\Validation\Validator;
 
@@ -113,25 +115,39 @@ class CommandService extends Exception implements ICommandService
         // Un objet de type CommandeDTO est retourné, incluant toutes les informations disponibles.
         //pour tout les itemsDTO dans le $commandeDto
         $montantTotal = 0;
+        $listeItems = [];
         foreach ($commandeDTO->getItems() as $item) {
             $numero = $item['numero'];
             $taille = $item['taille'];
+            $quantite = $item['quantite'];
             $catalog = new CatalogService();
-            $item = $catalog->getInformations($numero, $taille);
-            $montantTotal += $item['prix'] * $item['quantite'];
+            $itemBdd = $catalog->getInformations($numero, $taille);
+            $montantTotal += floatval($itemBdd['tarif']) * $item['quantite'];
+            $tailleBdd = Size::where('id', '=', $taille)->first()->toArray();
+            $listeItems= array_merge($listeItems, (array)$itemBdd);
         }
 
-        $id = Uuid::uuid4();
-            Command::create([
+        $id = Uuid::uuid4()->toString();
+            Command::updateOrCreate([
                 'id' => $id,
+                'delai'=>1,
                 'date_commande' => date('Y-m-d H:i:s'),
                 'montant_total' => $montantTotal,
                 'etat' => 1,
                 'mail_client' => $commandeDTO->mail_client,
                 'type_livraison' => $commandeDTO->type_livraison,
             ]);
-        return $this->readCommand($id);
-
+        Item::create([
+            'commande_id' => $id,
+            'numero' => $numero,
+            'libelle' => $itemBdd['libelle'],
+            'taille' => $taille,
+            'libelle_taille' => $tailleBdd['libelle'],
+            'tarif' => $itemBdd['tarif'],
+            'quantite' => $quantite,
+        ]);
+        $returnCommandeDTO = new CommandeDTO($commandeDTO->mail_client, $commandeDTO->type_livraison, $listeItems, $id, date('Y-m-d H:i:s'), $montantTotal, 1);
+        return $returnCommandeDTO;
 
     }
 

@@ -39,4 +39,3 @@ $app->get('../commande/{ID}', function ($request, $response){
 });
 
 $app->run();
-?>

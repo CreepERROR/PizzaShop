@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use pizzashop\shop\app\actions\AccederCommandeAction;
+use pizzashop\shop\app\actions\CreateCommandAction;
 use pizzashop\shop\models\Command;
 use Slim\App;
 
@@ -14,5 +15,7 @@ return function(App $app) {
         ->setName('commandes');
 
     $app->patch('.../commande/{ID}', Command::class);
+
+    $app->post('/createCommand', CreateCommandAction::class)->setName('createCommand');
     
 };
