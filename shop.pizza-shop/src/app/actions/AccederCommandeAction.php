@@ -11,10 +11,11 @@ use Slim\Psr7\Response;
 
 class AccederCommandeAction extends AbstractAction
 {
+
     public function __invoke(Request $request, Response $response, $args): Response
     {
         $id = $args['id_commande'];
-        $serviceCommande = new CommandService();
+        $serviceCommande = $this->container->get('command.service');
         try {
             $commande = $serviceCommande->readCommand($id);
         } catch (CommandeNotFoundException $e) {

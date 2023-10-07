@@ -17,7 +17,7 @@ class CreateCommandAction extends AbstractAction
             $body = $request->getBody()->getContents();
             $body = json_decode($body, true);
             $commandeDTO = new CommandeDTO($body['mail_client'], $body['type_livraison'], $body['items']);
-            $serviceCommand = new CommandService();
+            $serviceCommand = $this->container->get('command.service');
             $commandeDTO = $serviceCommand->createCommand($commandeDTO);
             $json = json_encode($commandeDTO);
             // Ajouter le contenu JSON à la réponse
