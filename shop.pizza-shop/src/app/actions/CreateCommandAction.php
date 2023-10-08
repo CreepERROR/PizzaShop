@@ -7,6 +7,8 @@ use pizzashop\shop\domain\dto\commande\CommandeDTO;
 use pizzashop\shop\domain\service\command\CommandService;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Symfony\Component\Validator\Validation;
+
 
 class CreateCommandAction extends AbstractAction
 {
@@ -18,10 +20,19 @@ class CreateCommandAction extends AbstractAction
             $body = json_decode($body, true);
             $commandeDTO = new CommandeDTO($body['mail_client'], $body['type_livraison'], $body['items']);
             $serviceCommand = $this->container->get('command.service');
-            $commandeDTO = $serviceCommand->createCommand($commandeDTO);
-            $json = json_encode($commandeDTO);
-            // Ajouter le contenu JSON à la réponse
-            $response->getBody()->write($json);
+
+            $validator = Validation::createValidator();
+            $valide = $serviceCommand->validateDataCommand($validator, $commandeDTO);
+            $valide = $valide->getContent();
+
+            if (empty($valide)) {
+                $commandeDTO = $serviceCommand->createCommand($commandeDTO);
+                $json = json_encode($commandeDTO);
+                // Ajouter le contenu JSON à la réponse
+                $response->getBody()->write($json);
+            } else {
+                $response->getBody()->write($valide);
+            }
 
             $response->withStatus(/*$json,*/ 201)->withHeader('Location', '/commandes/' . $commandeDTO->id);
         } catch (\Exception $e) {

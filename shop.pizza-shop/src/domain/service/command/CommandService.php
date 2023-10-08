@@ -18,6 +18,11 @@ use pizzashop\shop\models\Item;
 use pizzashop\shop\models\Size;
 use Ramsey\Uuid\Uuid;
 use Respect\Validation\Validator;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class CommandService extends Exception implements ICommandService
 {
@@ -157,21 +162,60 @@ class CommandService extends Exception implements ICommandService
      * @param CommandeDTO $commandeDTO
      * @return Response
      */
-    public function validateDataCommand(ValidatorInterface $validator, CommandeDTO $commandeDTO): Response
+    public function validateDataCommand(ValidatorInterface $validator, CommandeDTO $commandeDTO) : Response
     {
-        $errors = $validator->validate($commandeDTO);
-        if (count($errors) > 0) {
-            /*
-             * Uses a __toString method on the $errors variable which is a
-             * ConstraintViolationList object. This gives us a nice string
-             * for debugging.
-             */
-            $errorsString = (string) $errors;
+        $allErrors = array();
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($commandeDTO->mail_client, [
+            new Assert\Email(),
+            new Assert\NotBlank(),
+        ]);
+        $allErrors[] = $violations;
 
-            return new Response($errorsString);
+        $violations = $validator->validate($commandeDTO->type_livraison, [
+            new Assert\NotBlank(),
+            new Assert\Type('integer'),
+            new Assert\Range([
+                'min' => 1,
+                'max' => 3
+            ])
+        ]);
+        $allErrors[] = $violations;
+
+        $violations = $validator->validate($commandeDTO->itemDTO, [
+            new Assert\NotBlank(),
+            new Assert\Type('array'),
+        ]);
+        $allErrors[] = $violations;
+
+        foreach ($commandeDTO->getItems() as $item) {
+            $violations = $validator->validate($item['numero'], [
+                new Assert\NotBlank(),
+                new Assert\Type('integer'),
+                new Assert\Positive()
+            ]);
+            $allErrors[] = $violations;
+
+            $violations = $validator->validate($item['quantite'], [
+                new Assert\NotBlank(),
+                new Assert\Type('integer'),
+                new Assert\Positive()
+            ]);
+            $allErrors[] = $violations;
+
+            $violations = $validator->validate($item['taille'], [
+                new Assert\NotBlank(),
+                new Assert\Type('integer'),
+                new Assert\Range([
+                    'min' => 1,
+                    'max' => 2
+                ])
+            ]);
+            $allErrors[] = $violations;
         }
 
-        return new Response('La commande est validée !!');
+        $allErrors = implode($allErrors);
+        return new Response($allErrors);
     }
 
 }
