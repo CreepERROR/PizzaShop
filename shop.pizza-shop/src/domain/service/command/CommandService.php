@@ -121,6 +121,8 @@ class CommandService extends Exception implements ICommandService
         //pour tout les itemsDTO dans le $commandeDto
         $montantTotal = 0;
         $listeItems = [];
+        $id = Uuid::uuid4()->toString();
+
         foreach ($commandeDTO->getItems() as $item) {
             $numero = $item['numero'];
             $taille = $item['taille'];
@@ -129,10 +131,18 @@ class CommandService extends Exception implements ICommandService
             $itemBdd = $catalog->getInformations($numero, $taille);
             $montantTotal += floatval($itemBdd['tarif']) * $item['quantite'];
             $tailleBdd = Size::where('id', '=', $taille)->first()->toArray();
-            $listeItems= array_merge($listeItems, (array)$itemBdd);
-        }
 
-        $id = Uuid::uuid4()->toString();
+            // Ajoutez les informations de l'item au tableau $listeItems
+            $listeItems[] = [
+                'numero' => $numero,
+                'libelle' => $itemBdd['libelle'],
+                'taille' => $taille,
+                'libelle_taille' => $tailleBdd['libelle'],
+                'tarif' => $itemBdd['tarif'],
+                'quantite' => $quantite,
+            ];
+
+        }
             Command::updateOrCreate([
                 'id' => $id,
                 'delai'=>1,
@@ -142,17 +152,11 @@ class CommandService extends Exception implements ICommandService
                 'mail_client' => $commandeDTO->mail_client,
                 'type_livraison' => $commandeDTO->type_livraison,
             ]);
-        Item::create([
-            'commande_id' => $id,
-            'numero' => $numero,
-            'libelle' => $itemBdd['libelle'],
-            'taille' => $taille,
-            'libelle_taille' => $tailleBdd['libelle'],
-            'tarif' => $itemBdd['tarif'],
-            'quantite' => $quantite,
-        ]);
-        $returnCommandeDTO = new CommandeDTO($commandeDTO->mail_client, $commandeDTO->type_livraison, $listeItems, $id, date('Y-m-d H:i:s'), $montantTotal, 1);
-        return $returnCommandeDTO;
+        $array = $listeItems;
+
+
+
+        return new CommandeDTO($commandeDTO->mail_client, $commandeDTO->type_livraison, $array, $id, date('Y-m-d H:i:s'), $montantTotal, 1);
 
     }
 
