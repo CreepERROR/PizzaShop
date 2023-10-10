@@ -1,6 +1,6 @@
 <?php
 
-namespace pizzashop\auth\api\domain\dto;
+namespace pizzashop\auth\api\domain\DTO;
 
 abstract class DTO
 {
