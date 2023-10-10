@@ -8,7 +8,7 @@ use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException ;
 use Firebase\JWT\BeforeValidException;
 
-class authService {
+class tokenManager {
 
     private $secret;
     private $entete;
