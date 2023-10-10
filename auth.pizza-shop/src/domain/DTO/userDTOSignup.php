@@ -2,7 +2,7 @@
 
 namespace pizzashop\auth\api\domain\DTO\userDTOSignup;
 
-class UserSignUpDTO extends pizzashop\auth\api\domain\DTO\DTO  {
+class UserSignUpDTO {
     
     public string $firstName;
     public string $lastName;

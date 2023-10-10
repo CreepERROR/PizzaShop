@@ -2,8 +2,9 @@
 
 namespace pizzashop\auth\api\domain\DTO\userDTOValidate;
 
-class userValidateDTO extends pizzashop\auth\api\domain\DTO\DTO{
 
+class userValidateDTO  {
+    
     private $accessToken;
 
     public function __construct($accessToken) {
@@ -13,6 +14,4 @@ class userValidateDTO extends pizzashop\auth\api\domain\DTO\DTO{
     public function getAccessToken() {
         return $this->accessToken;
     }
-
-    
 }
