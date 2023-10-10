@@ -2,16 +2,30 @@
 
 namespace provider;
 
+use pizzashop\auth\api\src\models\Users;
+use function Symfony\Component\String\b;
+
 class Provider implements IProvider
 {
 
     public function verifAuthCredentials(string $login, string $password): bool
     {
-        // TODO: Implement verifAuthCredentials() method.
+        try {
+        $password=password_hash($password,PASSWORD_BCRYPT);
+            Users::find()->where(['login' => $login, 'password' => $password])->one();
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
     }
 
     public function verifAuthRefreshToken(string $refreshToken): bool
     {
-        // TODO: Implement verifAuthRefreshToken() method.
+        try {
+            Users::find()->where(['refresh_token' => $refreshToken])->one();
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
     }
 }
