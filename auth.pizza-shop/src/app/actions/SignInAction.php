@@ -14,5 +14,6 @@ class SignInAction extends AbstractAction
     public function __invoke(Request $request, Response $response, $args): Response
     {
         //TODO: Ajouter le code de l'action Signin Auth
+
     }
 }
