@@ -165,7 +165,6 @@ class CommandService extends Exception implements ICommandService
     public function validateDataCommand(ValidatorInterface $validator, CommandeDTO $commandeDTO) : Response
     {
         $allErrors = array();
-        $validator = Validation::createValidator();
         $violations = $validator->validate($commandeDTO->mail_client, [
             new Assert\Email(),
             new Assert\NotBlank(),
@@ -188,7 +187,7 @@ class CommandService extends Exception implements ICommandService
         ]);
         $allErrors[] = $violations;
 
-        foreach ($commandeDTO->getItems() as $item) {
+        foreach ($commandeDTO->itemDTO as $item) {
             $violations = $validator->validate($item['numero'], [
                 new Assert\NotBlank(),
                 new Assert\Type('integer'),
