@@ -1,5 +1,7 @@
 <?php
 
+namespace pizzashop\auth\api\token\TokenManager;
+
 require 'vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
