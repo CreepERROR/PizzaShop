@@ -1,6 +1,6 @@
 <?php
 
-namespace pizzashop\auth\api\actions;
+namespace pizzashop\auth\app\actions;
 
 //manque use pr le service et pr l'exception
 // TODO: Ajouter les use nécessaires
@@ -13,6 +13,6 @@ class ValidateAuthAction extends AbstractAction
 {
     public function __invoke(Request $request, Response $response, $args): Response
     {
-        //TODO: Ajouter le code de l'action Validate Auth
+        return $response->getBody()->write("Hello world!");
     }
 }

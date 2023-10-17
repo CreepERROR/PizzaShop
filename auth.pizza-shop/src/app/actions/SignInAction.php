@@ -1,6 +1,6 @@
 <?php
 
-namespace pizzashop\auth\api\actions;
+namespace pizzashop\auth\app\actions;
 
 //manque use pr le service et pr l'exception
 // TODO: Ajouter les use nécessaires
