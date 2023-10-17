@@ -1,5 +1,5 @@
 <?php
-namespace pizzashop\auth\api\service\authService;
+namespace pizzashop\auth\api\service;
 
 class ServiceAuth implements IServiceAuth
 {

@@ -1,9 +1,7 @@
 <?php
 
-namespace provider;
+namespace pizzashop\auth\api\domain\provider;
 
-use pizzashop\auth\api\src\models\Users;
-use function Symfony\Component\String\b;
 
 class Provider implements IProvider
 {

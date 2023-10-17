@@ -1,6 +1,6 @@
 <?php
 
-namespace provider;
+namespace pizzashop\auth\api\domain\provider;
 interface IProvider
 {
 
