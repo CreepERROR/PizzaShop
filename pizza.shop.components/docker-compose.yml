@@ -91,4 +91,4 @@ services:
     networks:
       - pizza-shop.net
     volumes:
-      - ../auth.-shop/sql:/var/sql
+      - ../auth.pizza-shop/sql:/var/sql
