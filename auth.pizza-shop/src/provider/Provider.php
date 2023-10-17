@@ -28,4 +28,9 @@ class Provider implements IProvider
         }
         return true;
     }
+
+    public function getProfilAuth(string $username, string $email, string $refresToken)
+    {
+        // TODO: Implement getProfilAuth() method.
+    }
 }

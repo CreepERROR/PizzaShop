@@ -1,8 +1,5 @@
 <?php
-namespace auth\pizzashop\src\Service;
-use IServiceAuth;
-use pizzashop\auth\api\src\models\Users;
-use provider\Provider;
+namespace pizzashop\auth\api\service\authService;
 
 class ServiceAuth implements IServiceAuth
 {
