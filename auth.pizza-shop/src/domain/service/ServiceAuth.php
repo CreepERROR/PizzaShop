@@ -1,9 +1,9 @@
 <?php
-namespace pizzashop\auth\api\service;
+namespace pizzashop\auth\api\domain\service;
 
 use pizzashop\auth\api\domain\manager\IManagerJWT;
 use pizzashop\auth\api\domain\provider\IProvider;
-use pizzashop\auth\api\src\models\Users;
+use pizzashop\auth\api\models\Users;
 class ServiceAuth implements IServiceAuth
 {
     private $provider;
@@ -58,6 +58,7 @@ class ServiceAuth implements IServiceAuth
             $user = $this->provider->getProfilAuth($data['username'], $data['email'], $data['refresh_token']);
             return $user;
         }else{
+            //faire distinction entre Token invalide et Token expiré
             return null;
         }
     }

@@ -5,13 +5,13 @@ use Slim\Factory\AppFactory as Factory;
 use Illuminate\Database\Capsule\Manager as Eloquent;
 
 //$settings = require_once __DIR__ . '/settings.php';
-$dependencies = require_once __DIR__ . '/dependencies.php';
-$actions = require_once __DIR__ . '/actions.php';
+$dependencies = require_once __DIR__ . '/action_dependencies.php';
+//$actions = require_once __DIR__ . '/actions.php';
 
 $builder = new ContainerBuilder();
 //$builder->addDefinitions($settings);
 $builder->addDefinitions($dependencies);
-$builder->addDefinitions($actions);
+//$builder->addDefinitions($actions);
 try {
     $c = $builder->build();
 } catch (Exception $e) {

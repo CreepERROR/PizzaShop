@@ -1,6 +1,6 @@
 <?php
 
-namespace pizzashop\auth\api\token\TokenManager;
+namespace pizzashop\auth\api\token;
 
 require 'vendor/autoload.php';
 

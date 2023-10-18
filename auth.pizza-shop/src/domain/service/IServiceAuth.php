@@ -1,6 +1,6 @@
 <?php
 
-namespace pizzashop\auth\api\service;
+namespace pizzashop\auth\api\domain\service;
 interface IServiceAuth
 {
     public function signin($credentials);
