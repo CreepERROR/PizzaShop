@@ -6,25 +6,19 @@ namespace pizzashop\auth\api\domain\provider;
 class Provider implements IProvider
 {
 
-    public function verifAuthCredentials(string $login, string $password): bool
+    /**
+     * @param string $login
+     * @param string $password
+     * @return refreshToken je crois !!!! Pas sur, redis moi
+     */
+    public function verifAuthCredentials(string $login, string $password)
     {
-        try {
-        $password=password_hash($password,PASSWORD_BCRYPT);
-            Users::find()->where(['login' => $login, 'password' => $password])->one();
-        } catch (\Exception $e) {
-            return false;
-        }
-        return true;
+        //TODO: verifier les credentials dans firebase
     }
 
-    public function verifAuthRefreshToken(string $refreshToken): bool
+    public function verifAuthRefreshToken(string $refreshToken)
     {
-        try {
-            Users::find()->where(['refresh_token' => $refreshToken])->one();
-        } catch (\Exception $e) {
-            return false;
-        }
-        return true;
+     //Todo: verifier le refresh token dans firebase
     }
 
     public function getProfilAuth(string $username, string $email, string $refresToken)
