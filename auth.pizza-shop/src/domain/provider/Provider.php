@@ -5,6 +5,8 @@ namespace pizzashop\auth\api\domain\provider;
 
 class Provider implements IProvider
 {
+    public function __construct()
+    {}
 
     /**
      * @param string $login
