@@ -18,20 +18,21 @@ class CreateCommandAction extends AbstractAction
     {
         try {
             try {
-
                 $client = new Client([
                     'base_uri' => 'http://api.pizza-auth',
                     'timeout' => 15.0,
                 ]);
+                $response = $client->request('GET', '/api/users/test', [
+                    'headers' => [
+                        'Authorization' => $request->getHeader('Authorization')
+                    ]
+                ]);
+                var_dump($response);
+
             }catch (\Error $e){
                 var_dump($e->getMessage());
             }
-            $response = $client->request('GET', '/api/users/test', [
-                'headers' => [
-                    'Authorization' => $request->getHeader('Authorization')
-                ]
-            ]);
-            var_dump($response);
+
             $code = $response->getStatusCode();
             if ($code != 200) {
                 throw new \Exception('Authentification invalide');
