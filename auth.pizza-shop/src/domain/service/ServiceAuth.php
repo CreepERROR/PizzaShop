@@ -12,8 +12,8 @@ class ServiceAuth implements IServiceAuth
     private $managerJWT;
     public function __construct(ContainerInterface $container)
     {
-        $this->provider = $container->get('auth.provider');
-        $this->managerJWT = $container->get('auth.managerJWT');
+        $this->provider = $container->get('provider');
+        $this->managerJWT = $container->get('managerJWT');
     }
 
     /**
