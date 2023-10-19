@@ -5,18 +5,16 @@ use Slim\Factory\AppFactory as Factory;
 use Illuminate\Database\Capsule\Manager as Eloquent;
 
 //$settings = require_once __DIR__ . '/settings.php';
-$dependencies = require_once __DIR__ . '/actions_dependencies.php';
-//$actions = require_once __DIR__ . '/actions.php';
+$dependencies = require_once __DIR__ . '/services_dependencies.php';
+$actions = require_once __DIR__ . '/actions_dependencies.php';
 
 $builder = new ContainerBuilder();
 //$builder->addDefinitions($settings);
 $builder->addDefinitions($dependencies);
-//$builder->addDefinitions($actions);
-try {
-    $c = $builder->build();
-} catch (Exception $e) {
-}
-$app = Factory::create();
+$builder->addDefinitions($actions);
+$c = $builder->build();
+
+$app = Factory::createFromContainer($c);
 
 
 $app->addBodyParsingMiddleware();

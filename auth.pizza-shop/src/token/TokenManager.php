@@ -43,9 +43,15 @@ class tokenManager {
         return $token;
         }
     
-        catch (ExpiredException $e) {} 
-        catch (SignatureInvalidException $e) {} 
-        catch (BeforeValidException $e) {} 
+        catch (ExpiredException $e) {
+            return 'votre token est expiré';
+        } 
+        catch (SignatureInvalidException $e) {
+            return 'votre signature est invalide';
+        } 
+        catch (BeforeValidException $e) {
+            return 'exception non valide';
+        } 
         catch (\UnexpectedValueException $e) { }
 
     }       
