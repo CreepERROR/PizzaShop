@@ -32,7 +32,7 @@ class managerJWT implements IManagerJWT
 
     public function createToken($data)
     {
-    $users = Users::all();
+    $users = Users::all($data);
 
     foreach ($users as $user){
         $payload = [
