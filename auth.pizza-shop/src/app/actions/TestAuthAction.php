@@ -17,7 +17,9 @@ class TestAuthAction extends AbstractAction
 {
     public function __invoke(Request $request, Response $response, $args): Response
     {
-        $body = $response->getBody()->write("blablabla");
+        $body = "blablabla";
+        $body = json_encode($body);
+        $response->getBody()->write($body);
         return $response->withHeader('Content-Type', 'application/json');
     }
 }
