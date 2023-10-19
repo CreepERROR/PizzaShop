@@ -20,7 +20,6 @@ class RefreshAuthAction extends AbstractAction
         try {
             $body = $request->getHeader('Authorization')[0];
             $token = explode(' ', $body)[1];
-            //$response->getBody()->write($token);
             $serviceAuth = $this->container->get('auth.service');
             $result = $serviceAuth->refresh($token);
             if (empty($result)) {
