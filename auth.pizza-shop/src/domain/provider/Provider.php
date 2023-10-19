@@ -1,6 +1,7 @@
 <?php
 
 namespace pizzashop\auth\api\domain\provider;
+use pizzashop\auth\api\models\Users;
 
 
 class Provider implements IProvider

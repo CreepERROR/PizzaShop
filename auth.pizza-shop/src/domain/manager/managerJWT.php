@@ -6,6 +6,8 @@ use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException ;
 use Firebase\JWT\BeforeValidException;
+use pizzashop\auth\api\models\Users;
+
 
 class managerJWT implements IManagerJWT
 {
