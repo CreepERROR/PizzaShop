@@ -5,7 +5,7 @@ use Slim\Factory\AppFactory as Factory;
 use Illuminate\Database\Capsule\Manager as Eloquent;
 
 //$settings = require_once __DIR__ . '/settings.php';
-$dependencies = require_once __DIR__ . '/action_dependencies.php';
+$dependencies = require_once __DIR__ . '/actions_dependencies.php';
 //$actions = require_once __DIR__ . '/actions.php';
 
 $builder = new ContainerBuilder();
