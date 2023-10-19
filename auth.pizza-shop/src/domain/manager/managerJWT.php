@@ -42,7 +42,7 @@ class managerJWT implements IManagerJWT
     {
         // TODO: Implement validateToken() method.
         $users = Users::where($token);
-        if ($users == new Key(getenv('SECRET_KEY'),'HS512' )) {
+        if ($users == new Key(getenv('SECRET_KEY'))) {
             $payload = ["iss" => "http://localhost:8080/", // issuer, émetteur du token
             "sub" => "pizza-shop.db", // Subject
             "aud" => "pizzashopcomponents-api.pizza-auth-1",//audience, utilisateur du token
