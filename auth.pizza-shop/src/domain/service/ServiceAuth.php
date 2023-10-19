@@ -4,6 +4,8 @@ namespace pizzashop\auth\api\domain\service;
 use pizzashop\auth\api\domain\manager\IManagerJWT;
 use pizzashop\auth\api\domain\provider\IProvider;
 use pizzashop\auth\api\models\Users;
+
+
 class ServiceAuth implements IServiceAuth
 {
     private $provider;
@@ -78,9 +80,30 @@ class ServiceAuth implements IServiceAuth
         return null;
     }
 
+
+    public function userExists($username, $email)
+    {
+        $user = Users::where('username', $username)->orWhere('email', $email)->first();
+
+        return $user !== null;
+    }
+
+    public function createUser($credentials)
+    {
+        $username = $credentials['username'];
+        $email = $credentials['email'];
+        $password = password_hash($credentials['password'], PASSWORD_BCRYPT);
+        $user = new Users($username,$email,$password);
+
+        return $user; // Vous pouvez retourner l'objet utilisateur avec l'ID attribué, par exemple.
+    }
+
+
     public function signup($credentials)
     {
         // TODO: Implement signup() method
+        
+
     }
 
     public function activate($token)
