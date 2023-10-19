@@ -20,9 +20,7 @@ class ValidateAuthAction extends AbstractAction
         try {
             $body = $request->getHeader('Authorization')[0];
             $token = explode(' ', $body)[1];
-            $provider = new Provider();
-            $managerJWT = new ManagerJWT();
-            $serviceAuth = new ServiceAuth($provider, $managerJWT);
+            $serviceAuth = $this->container->get('auth.service');
             $result = $serviceAuth->validate($token);
             if (empty($result)) {
                 //TODO : faire distinction expiré et invalide

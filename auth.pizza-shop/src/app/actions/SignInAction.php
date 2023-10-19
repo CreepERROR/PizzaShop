@@ -29,11 +29,7 @@ class SignInAction extends AbstractAction
             );
             //pas comme ça qu'on appelle le service
             //manque injections de dépendance ?
-            $provider = new Provider();
-            $managerJWT = new ManagerJWT();
-            $serviceAuth = new ServiceAuth($provider, $managerJWT);
-           // $serviceAuth = $this->container->get('auth.service');
-
+            $serviceAuth = $this->container->get('auth.service');
             $result = $serviceAuth->signin($credentials);
             if (empty($result)) {
                 $response->withStatus(401);
