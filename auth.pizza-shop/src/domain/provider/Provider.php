@@ -23,8 +23,11 @@ class Provider implements IProvider
             // L'authentification a réussi, générer un jeton JWT
             $jwtManager = new managerJWT();
             $token = $jwtManager->createToken([
-                'sub' => $user->email,
-                // Autres données à inclure dans le payload
+                "iss" => "http://localhost:8080/", // issuer, émetteur du token
+                "sub" => "pizza-shop.db", // Subject
+                "aud" => "pizzashopcomponents-api.pizza-auth-1",//audience, utilisateur du token
+                "iat" => time(), // Heure d'émission
+                "exp" => time() + 3600 // Heure d'expiration
             ]);
 
             return $token;
