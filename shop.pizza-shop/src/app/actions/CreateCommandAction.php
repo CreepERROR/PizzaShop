@@ -3,6 +3,7 @@
 namespace pizzashop\shop\app\actions;
 
 
+use GuzzleHttp\Client;
 use pizzashop\shop\domain\dto\commande\CommandeDTO;
 use pizzashop\shop\domain\service\command\CommandService;
 use Slim\Psr7\Request;
@@ -16,6 +17,30 @@ class CreateCommandAction extends AbstractAction
     public function __invoke(Request $request, Response $response, $args): Response
     {
         try {
+            try {
+
+                $client = new Client([
+                    'base_uri' => 'http://api.pizza-auth',
+                    'timeout' => 15.0,
+                ]);
+            }catch (\Error $e){
+                var_dump($e->getMessage());
+            }
+            $response = $client->request('GET', '/api/users/test', [
+                'headers' => [
+                    'Authorization' => $request->getHeader('Authorization')
+                ]
+            ]);
+            var_dump($response);
+            $code = $response->getStatusCode();
+            if ($code != 200) {
+                throw new \Exception('Authentification invalide');
+            }
+            $body = $response->getBody()->getContents();
+            $json = json_decode($body, true);
+            var_dump($json);
+
+            // Auth ok -> on peut valider la commande
             $body = $request->getBody()->getContents();
             $body = json_decode($body, true);
             $commandeDTO = new CommandeDTO($body['mail_client'], $body['type_livraison'], $body['items']);

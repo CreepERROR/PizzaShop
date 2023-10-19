@@ -30,7 +30,6 @@ class ServiceAuth implements IServiceAuth
             $data = [
                 'username' => $user->username,
                 'email' => $user->email,
-                'role' => $user->role,
                 'id' => $user->id
             ];
             $access_token = $this->managerJWT->createToken($data);
