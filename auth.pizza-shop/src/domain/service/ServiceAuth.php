@@ -95,7 +95,7 @@ class ServiceAuth implements IServiceAuth
         $password = password_hash($credentials['password'], PASSWORD_BCRYPT);
         $user = new Users($username,$email,$password);
 
-        return $user; // Vous pouvez retourner l'objet utilisateur avec l'ID attribué, par exemple.
+        return $user;
     }
 
 

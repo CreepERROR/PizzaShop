@@ -17,7 +17,7 @@ class tokenManager {
     private $payload;
     private $token;
 
-    public function __construct ($secret,$entete,$payload, $token){
+    public function __construct ($secret,$payload){
 
         $this->secret=$_ENV['SECRET_KEY'];
         $this->entete= [
@@ -51,6 +51,4 @@ class tokenManager {
     }       
 
 }
-
-
 
