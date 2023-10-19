@@ -22,13 +22,12 @@ class CreateCommandAction extends AbstractAction
                     'base_uri' => 'http://api.pizza-auth',
                     'timeout' => 15.0,
                 ]);
-                $response = $client->request('GET', '/api/users/test', [
+                $response = $client->request('GET', '/api/users/validate', [
                     'headers' => [
                         'Authorization' => $request->getHeader('Authorization')
                     ]
                 ]);
-                var_dump($response);
-
+                //var_dump($response);
             }catch (\Error $e){
                 var_dump($e->getMessage());
             }
@@ -36,10 +35,12 @@ class CreateCommandAction extends AbstractAction
             $code = $response->getStatusCode();
             if ($code != 200) {
                 throw new \Exception('Authentification invalide');
+            } else {
+                $body = $response->getBody()->getContents();
+                $json = json_decode($body, true);
+                var_dump($json);
             }
-            $body = $response->getBody()->getContents();
-            $json = json_decode($body, true);
-            var_dump($json);
+
 
             // Auth ok -> on peut valider la commande
             $body = $request->getBody()->getContents();

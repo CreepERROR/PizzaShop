@@ -1,6 +1,7 @@
 <?php
 
 namespace pizzashop\auth\api\domain\provider;
+use pizzashop\auth\api\models\Users;
 
 
 use pizzashop\auth\api\domain\manager\managerJWT;
