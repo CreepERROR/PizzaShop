@@ -33,28 +33,5 @@ class tokenManager {
         ];
         $this->token= JWT::encode($payload, $secret, 'HS512');
     }
-
-    public function decodeAccessToken($secret,$rq){
-
-        try {
-        $h = $rq->getHeader('Authorization')[0] ;
-        $tokenstring = sscanf($h, "Bearer %s")[0] ;
-        $token = JWT::decode ($tokenstring, new Key($secret,'HS512' ));
-        return $token;
-        }
-    
-        catch (ExpiredException $e) {
-            return 'votre token est expiré';
-        } 
-        catch (SignatureInvalidException $e) {
-            return 'votre signature est invalide';
-        } 
-        catch (BeforeValidException $e) {
-            return 'exception non valide';
-        } 
-        catch (\UnexpectedValueException $e) { }
-
-    }       
-
 }
 
