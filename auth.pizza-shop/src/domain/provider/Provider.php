@@ -3,6 +3,8 @@
 namespace pizzashop\auth\api\domain\provider;
 
 
+use pizzashop\auth\api\domain\manager\managerJWT;
+
 class Provider implements IProvider
 {
     public function __construct()
@@ -11,13 +13,20 @@ class Provider implements IProvider
     /**
      * @param string $login
      * @param string $password
-     * @return refreshToken je crois !!!! Pas sur, redis moi
+     * @return string|null
      */
     public function verifAuthCredentials(string $login, string $password)
     {
         $user = Users::where('username', $login)->first();
         if ($user && password_verify($password, $user->password) && $user->active) {
-            return $user->refresh_token; // Renvoie le refresh token
+            // L'authentification a réussi, générer un jeton JWT
+            $jwtManager = new managerJWT();
+            $token = $jwtManager->createToken([
+                'sub' => $user->email,
+                // Autres données à inclure dans le payload
+            ]);
+
+            return $token;
         }
         return null; // Renvoie null si l'authentification échoue
     }
