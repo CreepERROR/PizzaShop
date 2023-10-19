@@ -16,7 +16,7 @@ class managerJWT implements IManagerJWT
     
     public function __construct()
     {
-        $this->secret=$_ENV['SECRET_KEY'];
+        $this->secret=getenv('SECRET_KEY');
         $this->entete= [
             "alg" => "HS512", // hashing
             "typ" => "JWT" // type
