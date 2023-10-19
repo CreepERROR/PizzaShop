@@ -4,17 +4,16 @@ namespace pizzashop\auth\api\domain\service;
 use pizzashop\auth\api\domain\manager\IManagerJWT;
 use pizzashop\auth\api\domain\provider\IProvider;
 use pizzashop\auth\api\models\Users;
-
+use Psr\Container\ContainerInterface;
 
 class ServiceAuth implements IServiceAuth
 {
     private $provider;
     private $managerJWT;
-    public function __construct(IProvider $provider, IManagerJWT $managerJWT)
+    public function __construct(ContainerInterface $container)
     {
-        //todo: injecter le provider et le managerJWT dans le constructeur
-        $this->provider = $provider;
-        $this->managerJWT = $managerJWT;
+        $this->provider = $container->get('auth.provider');
+        $this->managerJWT = $container->get('auth.managerJWT');
     }
 
     /**
@@ -102,8 +101,6 @@ class ServiceAuth implements IServiceAuth
     public function signup($credentials)
     {
         // TODO: Implement signup() method
-        
-
     }
 
     public function activate($token)
