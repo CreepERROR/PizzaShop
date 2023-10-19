@@ -20,7 +20,7 @@ class RefreshAuthAction extends AbstractAction
         try {
             $body = $request->getHeader('Authorization')[0];
             $token = explode(' ', $body)[1];
-            $response->getBody()->write($token);
+            //$response->getBody()->write($token);
             $provider = new Provider();
             $managerJWT = new ManagerJWT();
             $serviceAuth = new ServiceAuth($provider, $managerJWT);
@@ -46,8 +46,6 @@ class RefreshAuthAction extends AbstractAction
             $response->withStatus(400);
             $response->getBody()->write($e->getMessage());
         }
-
         return $response->withHeader('Content-Type', 'application/json');
-
     }
 }
