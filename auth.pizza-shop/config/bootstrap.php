@@ -24,7 +24,9 @@ $app->addErrorMiddleware(true, false, false)
     ->forceContentType('application/json');
 
 $eloquent = new Eloquent();
-   $eloquent ->addConnection(parse_ini_file(__DIR__ . '/auth.db.ini'), 'auth');
+$eloquent->addConnection(parse_ini_file(__DIR__ . '/auth.db.ini'), 'auth');
+$eloquent->setAsGlobal();
+$eloquent->bootEloquent();
 
 
 (require_once __DIR__ . '/routes.php')($app);
