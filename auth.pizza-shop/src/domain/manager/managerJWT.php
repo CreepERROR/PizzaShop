@@ -33,8 +33,6 @@ class managerJWT implements IManagerJWT
     {
     $users = Users::where('users','email','password');
 
-    foreach ($users as $user){
-    }
     
     }
 
@@ -42,12 +40,12 @@ class managerJWT implements IManagerJWT
     {
         // TODO: Implement validateToken() method.
         $users = Users::where($token);
-        if ($users == new Key(getenv((string)('SECRET_KEY')), true)) {
-            $payload = ["iss" => "http://localhost:8080/", // issuer, émetteur du token
-            "sub" => "pizza-shop.db", // Subject
-            "aud" => "pizzashopcomponents-api.pizza-auth-1",//audience, utilisateur du token
-            "iat" => time(), // Heure d'émission
-            "exp" => time() + 3600 // Heure d'expiration
+        // if ($users == ) {
+            // $payload = ["iss" => "http://localhost:8080/", // issuer, émetteur du token
+            // "sub" => "pizza-shop.db", // Subject
+            // "aud" => "pizzashopcomponents-api.pizza-auth-1",//audience, utilisateur du token
+            // "iat" => time(), // Heure d'émission
+            // "exp" => time() + 3600 // Heure d'expiration
         ];
 
             return $payload;
