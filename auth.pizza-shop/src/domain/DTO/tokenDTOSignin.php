@@ -4,8 +4,9 @@ namespace pizzashop\auth\api\domain\DTO;
 
 class tokenDTOsignin{
 
-    public $entete;
-    public $payload;
+    private $secret;
+    private $entete;
+    private $payload;
 
     public function __construct($secret,$entete,$payload)
     {
