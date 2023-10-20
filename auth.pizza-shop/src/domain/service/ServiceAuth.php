@@ -25,18 +25,19 @@ class ServiceAuth implements IServiceAuth
     {
         $username = $credentials['username'];
         $password = $credentials['password'];
-        $user = $this->provider->verifAuthCredentials($username, $password);
-        if($user) {
+        $refreshToken = $this->provider->verifAuthCredentials($username, $password);
+
+        if($refreshToken) {
             $data = [
-                'username' => $user->username,
-                'email' => $user->email,
-                'id' => $user->id
+                'username' => $refreshToken->username,
+                'email' => $refreshToken->email,
+                'id' => $refreshToken->id
+
             ];
             $access_token = $this->managerJWT->createToken($data);
-            $refresh_token = $this->provider->verifAuthRefreshToken($user->refresh_token);
             return [
                 'access_token' => $access_token,
-                'refresh_token' => $refresh_token
+                'refresh_token' => $refreshToken->refresh_token
             ];
         }else{
             return null;
@@ -54,8 +55,9 @@ class ServiceAuth implements IServiceAuth
     public function validate($access_token)
     {
         $data = $this->managerJWT->validateToken($access_token);
+        var_dump($data);
         if($data){
-            $user = $this->provider->getProfilAuth($data['username'], $data['email'], $data['refresh_token']);
+            $user = $this->provider->getProfilAuth($data['username'], $data['email'], $access_token);
             return $user;
         }else{
             //faire distinction entre Token invalide et Token expiré

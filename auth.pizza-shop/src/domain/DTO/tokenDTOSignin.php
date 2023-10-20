@@ -1,16 +1,14 @@
 <?php
 
-namespace pizzashop\auth\api\domain\DTO\tokenDTOsignin;
+namespace pizzashop\auth\api\domain\DTO;
 
-class tokenSigninDTO{
+class tokenDTOsignin{
 
-    private $secret;
-    private $entete;
-    private $payload;
+    public $entete;
+    public $payload;
 
     public function __construct($secret,$entete,$payload)
     {
-        $this->secret = $secret;
         $this->entete = $entete;
         $this->payload = $payload;
     }
