@@ -17,30 +17,7 @@ class CreateCommandAction extends AbstractAction
     public function __invoke(Request $request, Response $response, $args): Response
     {
         try {
-            try {
-                $client = new Client([
-                    'base_uri' => 'http://api.pizza-auth',
-                    'timeout' => 15.0,
-                ]);
-                $response = $client->request('GET', '/api/users/validate', [
-                    'headers' => [
-                        'Authorization' => $request->getHeader('Authorization')
-                    ]
-                ]);
-                //var_dump($response);
-            }catch (\Error $e){
-                var_dump($e->getMessage());
-            }
-
-            $code = $response->getStatusCode();
-            if ($code != 200) {
-                throw new \Exception('Authentification invalide');
-            } else {
-                $body = $response->getBody()->getContents();
-                $json = json_decode($body, true);
-                var_dump($json);
-            }
-
+            //curl sur adresse de api auth pr vérif que bien connecté
 
             // Auth ok -> on peut valider la commande
             $body = $request->getBody()->getContents();
