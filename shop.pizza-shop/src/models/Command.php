@@ -21,7 +21,6 @@ class Command extends Model
     public $timestamps = false;
     protected $fillable = ['mail_client','id', 'delai', 'date_commande', 'type_livraison', 'etat', 'montant_total', 'id_client'];
 
-    public function calculerMontantTotal(){}
 
     public function items() {
         return $this->hasMany(Item::class, 'commande_id');
