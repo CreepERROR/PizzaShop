@@ -20,7 +20,7 @@ class Provider implements IProvider
     {
         $user = Users::where('username', $login)->first();
         if ($user && password_verify($password, $user->password) && $user->active) {
-            return $user->refresh_token; // Renvoie le refresh token
+            return $user; // Renvoie le refresh token
         }
         return null; // Renvoie null si l'authentification échoue
     }
