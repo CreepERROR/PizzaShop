@@ -15,25 +15,33 @@ class managerJWT implements IManagerJWT
     
     public function __construct()
     {
-        $this->secret=getenv('SECRET_KEY');
-        $this->entete= [
-            "alg" => "HS512", // hashing
-            "typ" => "JWT" // type
-        ];;
-         $this->payload=[
-             "iss" => "http://localhost:8080/", // issuer, émetteur du token
-             "sub" => "pizza-shop.db", // Subject
-             "aud" => "pizzashopcomponents-api.pizza-auth-1",//audience, utilisateur du token
-             "iat" => time(), // Heure d'émission
-             "exp" => time() + 3600 // Heure d'expiration
-         ];
+        $this->secret = $secret;
+        $this->entete = $entete;
+        $this->payload = $payload;
+        $this->token = $token;
     }
 
-    public function createToken($data)
+    public function createToken($secret,$entete,$payload)
     {
-    $users = Users::where('users','email','password');
 
-    
+        if ($users == Users::where('email','password')){
+            
+            $this->secret = getenv('SECRET_KEY');
+            
+            $this->entete= [
+                "alg" => "HS512", // hashing
+                "typ" => "JWT" // type
+            ];
+
+            $this->payload=[
+                "iss" => "http://localhost:8080/", // issuer, émetteur du token
+                "sub" => "pizza-shop.db", // Subject
+                "aud" => "pizzashopcomponents-api.pizza-auth-1",//audience, utilisateur du token
+                "iat" => time(), // Heure d'émission
+                "exp" => time() + 3600 // Heure d'expiration
+            ];
+        }
+            
     }
 
     public function validateToken($token)
@@ -46,7 +54,7 @@ class managerJWT implements IManagerJWT
             // "aud" => "pizzashopcomponents-api.pizza-auth-1",//audience, utilisateur du token
             // "iat" => time(), // Heure d'émission
             // "exp" => time() + 3600 // Heure d'expiration
-        ];
+        //];
 
             return $payload;
         }
