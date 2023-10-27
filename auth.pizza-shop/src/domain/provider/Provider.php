@@ -34,14 +34,16 @@ class Provider implements IProvider
         return false;
     }
 
-    public function getProfilAuth(string $username, string $email, string $refreshToken)
+    public function getProfilAuth(string $username, string $refreshToken)
     {
-        $user = Users::where('email', $email)->first();
-        if ($user && $user->username === $username && $user->refresh_token === $refreshToken) {
+
+        $user = Users::where('username', $username)->first();
+        if ($user && $user->refresh_token === $refreshToken) {
             return [
                 'username' => $user->username,
                 'email' => $user->email,
                 'refresh_token' => $user->refresh_token,
+                'id' => $user->id
             ];
         }
         return null;

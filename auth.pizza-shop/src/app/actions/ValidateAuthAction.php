@@ -21,8 +21,10 @@ class ValidateAuthAction extends AbstractAction
             $body = $request->getHeader('Authorization')[0];
             $token = explode(' ', $body)[1];
             $serviceAuth = $this->container->get('auth.service');
+            $body = $request->getBody()->getContents();
+            $data = json_decode($body, true);
+            $token = [0=>$token, 1=>$data];
             $result = $serviceAuth->validate($token);
-            var_dump($result);
             if (empty($result)) {
                 //TODO : faire distinction expiré et invalide
                 $response->withStatus(401);
@@ -35,8 +37,8 @@ class ValidateAuthAction extends AbstractAction
             } else {
                 $response->withStatus(200);
                 $userInfo = array (
-                    "username" => $result->username,
-                    "email" => $result->email,
+                    "username" => $result['username'],
+                    "email" => $result['email'],
                 );
                 $userInfo = json_encode($userInfo);
                 $response->getBody()->write($userInfo);
