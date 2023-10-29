@@ -25,15 +25,13 @@ class SignInAction extends AbstractAction
                 throw new \Exception('Authentification invalide');
             } else {
                 $body = $response->getBody()->getContents();
-                $json = json_encode($body, true);
                 $response = new Response();
-                $response->getBody()->write($json);
+                $response->getBody()->write($body);
             }
         }catch (\Error $e){
             $response->withStatus(400);
             $response->getBody()->write($e->getMessage());
         }
-
         return $response->withHeader('Content-Type', 'application/json');
     }
 }
