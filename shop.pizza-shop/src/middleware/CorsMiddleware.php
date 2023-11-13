@@ -1,6 +1,6 @@
 <?php
 
-namespace pizzashop\shop\Middleware\Cors;
+namespace pizzashop\shop\Middleware\CorsMiddleware;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
