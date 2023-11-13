@@ -19,32 +19,61 @@ class CreateCommandAction extends AbstractAction
     public function __invoke(Request $request, Response $response, $args): Response
     {
         try {
-            //jsp si c utile de vérifier que le header est bien en mode bearer mais bon
             try{
+                // vérif présence access token ds header
                 if($request->getHeader('Authorization') == null){
                     throw new Exception('No header');
                 }
                 $header = $request->getHeader('Authorization')[0];
-            }catch (Exception $e) {
+                $bearer = explode(' ', $header)[0];
 
+                //vérif présence refresh token ds le body
+                if ($request->getBody() == null) {
+                    throw new Exception('No body');
+                }
+                $body = $request->getBody()->getContents();
+                $body = json_decode($body, true);
+                $refresh = $body->refresh_token;
+            }catch (Exception $e) {
                 $response = $response->withStatus(401);
                 $response->getBody()->write($e->getMessage());
                 return $response->withHeader('Content-Type', 'application/json');
             }
-            $bearer = explode(' ', $header)[0];
-            if (isset($bearer) && $bearer=='Bearer') {
-                $token = explode(' ', $header)[1];
-                //faire validate le token ?
+
+            //si le refresh et l'access sont bien présents, on appelle client Guzzle
+            if (isset($refresh) && isset($header) && $bearer=='Bearer') {
+                $access = explode(' ', $header)[1];
+                    $client = new Client([
+                        'base_uri' => 'http://api.pizza-auth',
+                        'timeout' => 15.0,
+                    ]);
+                    $responseValidate = $client->request('POST', '/api/users/validate', [
+                        'headers' => [
+                            'Authorization' => 'Bearer'.$access
+                        ],
+                        'body' => json_encode($body)
+                    ]);
+                    $code = $responseValidate->getStatusCode();
+                    if ($code != 200) {
+                        throw new \Exception('Validate Token sans succès');
+                    } else {
+                        $bodyResponse = $responseValidate->getBody()->getContents();
+                        //$response = new Response();
+                        //$response->getBody()->write($bodyResponse);
+
+                        //si tout va bien, on utilise les éléments renvoyés par validate pour créer la commande
+                        $body = $request->getBody()->getContents();
+                        $body = json_decode($body, true);
+                        $commandeDTO = new CommandeDTO($body['mail_client'], $responseValidate['email'], $body['items']);
+                        $serviceCommand = $this->container->get('command.service');
+
+                        $validator = Validation::createValidator();
+                        $valide = $serviceCommand->validateDataCommand($validator, $commandeDTO);
+                        $valide = $valide->getContent();
+                    }
 
                 //création de la commande à proprement parler
-                $body = $request->getBody()->getContents();
-                $body = json_decode($body, true);
-                $commandeDTO = new CommandeDTO($body['mail_client'], $body['type_livraison'], $body['items']);
-                $serviceCommand = $this->container->get('command.service');
 
-                $validator = Validation::createValidator();
-                $valide = $serviceCommand->validateDataCommand($validator, $commandeDTO);
-                $valide = $valide->getContent();
 
                 if (empty($valide)) {
                     $commandeDTO = $serviceCommand->createCommand($commandeDTO);
