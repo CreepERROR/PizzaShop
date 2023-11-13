@@ -3,6 +3,7 @@
 //use pizzashop\shop\domain\service\utils\Eloquent;
 use DI\ContainerBuilder;
 use Illuminate\Database\Capsule\Manager as Eloquent;
+use pizzashop\shop\Middleware\Cors;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
@@ -27,6 +28,7 @@ try {
 
 $app->addRoutingMiddleware();
 $app->addErrorMiddleware(true, false, false);
+$app->add(new Cors());
 $twig = Twig::create('../src/templates',['cache'=>'cache/','auto_reload'=>true]);
 
 $eloquent = new Eloquent();
