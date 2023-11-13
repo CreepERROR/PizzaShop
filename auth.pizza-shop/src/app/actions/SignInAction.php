@@ -32,7 +32,7 @@ class SignInAction extends AbstractAction
             $serviceAuth = $this->container->get('auth.service');
             $result = $serviceAuth->signin($credentials);
             if (empty($result)) {
-                $response->withStatus(401);
+                $response = $response->withStatus(401);
                 $errorMessage = array (
                     "error" => "Unauthorized",
                     "message" => "Votre identifiation a echoue!!"
@@ -40,7 +40,7 @@ class SignInAction extends AbstractAction
                 $errorMessage = json_encode($errorMessage);
                 $response->getBody()->write($errorMessage);
             } else {
-                $response->withStatus(200);
+                $response = $response->withStatus(200);
                 $tokens = array (
                     "access_token" => $result['access_token'],
                     "refresh_token" => $result['refresh_token']
@@ -52,10 +52,10 @@ class SignInAction extends AbstractAction
 
         } catch (\Exception $e) {
             //TODO: gérer les exceptions
-            $response->withStatus(400);
+            $response = $response->withStatus(400);
             $response->getBody()->write($e->getMessage());
         }
-
+        var_dump($response->getStatusCode());
         return $response->withHeader('Content-Type', 'application/json');
 
     }

@@ -23,7 +23,7 @@ class RefreshAuthAction extends AbstractAction
             $serviceAuth = $this->container->get('auth.service');
             $result = $serviceAuth->refresh($token);
             if (empty($result)) {
-                $response->withStatus(401);
+                $response = $response->withStatus(401);
                 $errorMessage = array (
                     "error" => "NON",
                     "message" => "Le refresh du token n'a pas fonctionne"
@@ -31,7 +31,7 @@ class RefreshAuthAction extends AbstractAction
                 $errorMessage = json_encode($errorMessage);
                 $response->getBody()->write($errorMessage);
             } else {
-                $response->withStatus(200);
+                $response = $response->withStatus(200);
                 $tokens = array (
                     "access_token" => $result['access_token'],
                     "refresh_token" => $result['refresh_token']
@@ -40,7 +40,7 @@ class RefreshAuthAction extends AbstractAction
                 $response->getBody()->write($tokens);
             }
         } catch (\Exception $e) {
-            $response->withStatus(400);
+            $response = $response->withStatus(400);
             $response->getBody()->write($e->getMessage());
         }
         return $response->withHeader('Content-Type', 'application/json');

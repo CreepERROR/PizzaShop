@@ -3,6 +3,8 @@
 namespace pizzashop\shop\app\actions;
 
 
+use ErrorException;
+use Exception;
 use GuzzleHttp\Client;
 use pizzashop\shop\domain\dto\commande\CommandeDTO;
 use pizzashop\shop\domain\service\command\CommandService;
@@ -17,9 +19,18 @@ class CreateCommandAction extends AbstractAction
     public function __invoke(Request $request, Response $response, $args): Response
     {
         try {
-
             //jsp si c utile de vérifier que le header est bien en mode bearer mais bon
-            $header = $request->getHeader('Authorization')[0];
+            try{
+                if($request->getHeader('Authorization') == null){
+                    throw new Exception('No header');
+                }
+                $header = $request->getHeader('Authorization')[0];
+            }catch (Exception $e) {
+
+                $response = $response->withStatus(401);
+                $response->getBody()->write($e->getMessage());
+                return $response->withHeader('Content-Type', 'application/json');
+            }
             $bearer = explode(' ', $header)[0];
             if (isset($bearer) && $bearer=='Bearer') {
                 $token = explode(' ', $header)[1];
@@ -44,12 +55,12 @@ class CreateCommandAction extends AbstractAction
                     $response->getBody()->write($valide);
                 }
 
-                $response->withStatus(/*$json,*/ 201)->withHeader('Location', '/commandes/' . $commandeDTO->id);
+                $response = $response->withStatus(/*$json,*/ 201)->withHeader('Location', '/commandes/' . $commandeDTO->id);
             }
 
         } catch (\Exception $e) {
             //TODO: gérer les exceptions
-            $response->withStatus(400);
+            $response = $response->withStatus(400);
             $response->getBody()->write($e->getMessage());
         }
 
