@@ -18,9 +18,10 @@ class CorsMiddleware
         $response = $handler->handle($rq);
 
         $response = $response
+            
+            ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Request-Headers: Content-Type, X-ABC')
             ->withHeader('Access-Control-Request-Method: POST')
-            ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Methods', 'POST, PUT, GET')
             ->withHeader('Access-Control-Allow-Headers', 'Authorization')
             ->withHeader('Access-Control-Max-Age', '3600')
