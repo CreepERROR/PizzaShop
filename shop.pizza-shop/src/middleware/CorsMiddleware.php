@@ -18,7 +18,6 @@ class CorsMiddleware
         $response = $handler->handle($rq);
 
         $response = $response
-            
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Request-Headers: Content-Type, X-ABC')
             ->withHeader('Access-Control-Request-Method: POST')
