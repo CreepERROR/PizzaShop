@@ -1,9 +1,10 @@
 <?php
 
-namespace pizzashop\shop\Middleware\CorsMiddleware;
+namespace pizzashop\shop\middleware;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Exception\HttpUnauthorizedException;
 use Slim\Psr7\Response;
 
 class CorsMiddleware

@@ -3,7 +3,8 @@
 //use pizzashop\shop\domain\service\utils\Eloquent;
 use DI\ContainerBuilder;
 use Illuminate\Database\Capsule\Manager as Eloquent;
-use pizzashop\shop\Middleware\CorsMiddleware;
+
+use pizzashop\shop\middleware\CorsMiddleware;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
