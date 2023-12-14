@@ -30,4 +30,37 @@ class CatalogService extends Exception implements ICatalogService
         return $product;
   }
 
+    /**
+     * Retourne la liste des produits, il s'agit d'une liste complète
+     * avec des informations minimales sur chaque produit, étendue avec une référence (URI) vers
+     * le produit concerné permettant d'obtenir le détail du produit
+     * @return void
+     */
+    public function getProducts()
+    {
+        return Product::select('produit.*', 'tarif.tarif', 'categorie.libelle as categorie_libelle')
+            ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
+            ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
+            ->get()->toArray();
+
+    }
+
+    public function getProduct($idProduct)
+    {
+        return Product::select('produit.*', 'tarif.tarif', 'categorie.libelle as categorie_libelle')
+            ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
+            ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
+            ->where('produit.id', $idProduct)
+            ->first()->toArray();
+    }
+public function getProductsByCategory($idCategorie){
+    return Product::select('produit.*', 'tarif.tarif', 'categorie.libelle as categorie_libelle')
+    ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
+    ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
+    ->where('produit.categorie_id', $idCategorie)
+    ->get()->toArray();
+}
+
+
+
 }

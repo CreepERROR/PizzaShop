@@ -19,4 +19,12 @@ return function(App $app) {
     $app->post('/createCommand', CreateCommandAction::class)->setName('createCommand');
     $app->post('/signin', SignInAction::class)->setName('signin');
 
+
+    // routes du catalogue
+    $app->get('/produits[/]', \pizzashop\shop\app\actions\ListerProduitsAction::class)
+        ->setName('produits');
+    $app->get('/produit/{id_produit}[/]', \pizzashop\shop\app\actions\ConsulterProduitAction::class)
+        ->setName('produit');
+    $app->get('/categories/{id_categorie}/produits[/]', \pizzashop\shop\app\actions\ListerProduitsParCategorieAction::class)
+        ->setName('produits_par_categorie');
 };
