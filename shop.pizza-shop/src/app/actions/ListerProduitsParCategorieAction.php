@@ -2,7 +2,6 @@
 
 namespace pizzashop\shop\app\actions;
 
-use pizzashop\shop\domain\service\catalog\CatalogService;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
@@ -15,7 +14,7 @@ class ListerProduitsParCategorieAction extends AbstractAction
      */
     public function __invoke(Request $request, Response $response, $args): Response
     {
-        $catalogService = new CatalogService();
+        $catalogService = $this->container->get('catalog.service');
         $products = $catalogService->getProductsByCategory($args['id_categorie']);
         foreach ($products as $key => $product) {
             $products[$key]['uri'] = "http://localhost:2080/produit/" . $product['id'];
