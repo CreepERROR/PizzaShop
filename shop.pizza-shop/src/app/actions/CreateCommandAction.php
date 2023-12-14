@@ -26,6 +26,7 @@ class CreateCommandAction extends AbstractAction
                 }
                 $header = $request->getHeader('Authorization')[0];
                 $bearer = explode(' ', $header)[0];
+                //var_dump($bearer);
 
                 //vérif présence refresh token ds le body
                 if ($request->getBody() == null) {
@@ -33,7 +34,9 @@ class CreateCommandAction extends AbstractAction
                 }
                 $body = $request->getBody()->getContents();
                 $body = json_decode($body, true);
-                $refresh = $body->refresh_token;
+                $refresh = $body['refresh_token'];
+                //var_dump($refresh);
+
             }catch (Exception $e) {
                 $response = $response->withStatus(401);
                 $response->getBody()->write($e->getMessage());
@@ -43,13 +46,15 @@ class CreateCommandAction extends AbstractAction
             //si le refresh et l'access sont bien présents, on appelle client Guzzle
             if (isset($refresh) && isset($header) && $bearer=='Bearer') {
                 $access = explode(' ', $header)[1];
-                    $client = new Client([
+                //var_dump($access);
+
+                $client = new Client([
                         'base_uri' => 'http://api.pizza-auth',
                         'timeout' => 15.0,
                     ]);
-                    $responseValidate = $client->request('POST', '/api/users/validate', [
+                    $responseValidate = $client->request('GET', '/api/users/validate', [
                         'headers' => [
-                            'Authorization' => 'Bearer'.$access
+                            'Authorization' => 'Bearer '.$access
                         ],
                         'body' => json_encode($body)
                     ]);
@@ -58,33 +63,35 @@ class CreateCommandAction extends AbstractAction
                         throw new \Exception('Validate Token sans succès');
                     } else {
                         $bodyResponse = $responseValidate->getBody()->getContents();
-                        //$response = new Response();
-                        //$response->getBody()->write($bodyResponse);
+                        $bodyResponse = stripslashes(html_entity_decode($bodyResponse));
+                        $bodyResponse=json_decode($bodyResponse,true);
+                        $userMail = $bodyResponse['email'];
+                        $userName = $bodyResponse['username'];
 
+                        //création de la commande à proprement parler
                         //si tout va bien, on utilise les éléments renvoyés par validate pour créer la commande
                         $body = $request->getBody()->getContents();
                         $body = json_decode($body, true);
-                        $commandeDTO = new CommandeDTO($body['mail_client'], $responseValidate['email'], $body['items']);
+                        //var_dump($body);
+                        $commandeDTO = new CommandeDTO($userMail, $body['type_livraison'], $body['items']);
                         $serviceCommand = $this->container->get('command.service');
 
                         $validator = Validation::createValidator();
                         $valide = $serviceCommand->validateDataCommand($validator, $commandeDTO);
                         $valide = $valide->getContent();
+
+                        if (empty($valide)) {
+                            $commandeDTO = $serviceCommand->createCommand($commandeDTO);
+                            $json = json_encode($commandeDTO);
+                            // Ajouter le contenu JSON à la réponse
+                            $response->getBody()->write($json);
+                        } else {
+                            $response->getBody()->write($valide);
+                        }
                     }
 
-                //création de la commande à proprement parler
-
-
-                if (empty($valide)) {
-                    $commandeDTO = $serviceCommand->createCommand($commandeDTO);
-                    $json = json_encode($commandeDTO);
-                    // Ajouter le contenu JSON à la réponse
-                    $response->getBody()->write($json);
-                } else {
-                    $response->getBody()->write($valide);
-                }
-
-                $response = $response->withStatus(/*$json,*/ 201)->withHeader('Location', '/commandes/' . $commandeDTO->id);
+                $response = $response->withStatus(/*$json,*/ 201);
+                    //->withHeader('Location', '/commandes/' . $commandeDTO->id);
             }
 
         } catch (\Exception $e) {
