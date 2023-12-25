@@ -38,8 +38,7 @@ class CatalogService extends Exception implements ICatalogService
      */
     public function getProducts()
     {
-        return Product::select('produit.*', 'tarif.tarif', 'categorie.libelle as categorie_libelle')
-            ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
+        return Product::select('produit.id', 'produit.libelle', 'produit.description', 'produit.image', 'categorie.libelle')
             ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
             ->get()->toArray();
 
@@ -47,19 +46,25 @@ class CatalogService extends Exception implements ICatalogService
 
     public function getProduct($idProduct)
     {
-        return Product::select('produit.*', 'tarif.tarif', 'categorie.libelle as categorie_libelle')
+        $produit = Product::select('produit.id', 'produit.libelle', 'produit.description', 'produit.image', 'categorie.libelle')
             ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
             ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
             ->where('produit.id', $idProduct)
             ->first()->toArray();
+        $tarifs = Product::select('taille.libelle as taille', 'tarif.tarif as tarif')
+            ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
+            ->join('taille', 'tarif.taille_id', '=', 'taille.id')
+            ->where('produit.id', $idProduct)
+            ->get()->toArray();
+        $produit['tarifs'] = $tarifs;
+        return $produit;
     }
-public function getProductsByCategory($idCategorie){
-    return Product::select('produit.*', 'tarif.tarif', 'categorie.libelle as categorie_libelle')
-    ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
-    ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
-    ->where('produit.categorie_id', $idCategorie)
-    ->get()->toArray();
-}
+    public function getProductsByCategory($idCategorie){
+        return Product::select('produit.id', 'produit.libelle', 'produit.description', 'produit.image', 'categorie.libelle')
+            ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
+            ->where('produit.categorie_id', $idCategorie)
+            ->get()->toArray();
+    }
 
 
 
