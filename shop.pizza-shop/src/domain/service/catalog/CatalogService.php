@@ -44,17 +44,17 @@ class CatalogService extends Exception implements ICatalogService
 
     }
 
-    public function getProduct($idProduct)
+    public function getProduct($numProduct)
     {
         $produit = Product::select('produit.id', 'produit.numero', 'produit.libelle', 'produit.description', 'produit.image', 'categorie.libelle')
             ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
             ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
-            ->where('produit.id', $idProduct)
+            ->where('produit.numero', $numProduct)
             ->first()->toArray();
-        $tarifs = Product::select('taille.libelle as taille', 'tarif.tarif as tarif')
+        $tarifs = Product::select('taille.libelle as taille', 'taille.id as taille_id', 'tarif.tarif as tarif')
             ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
             ->join('taille', 'tarif.taille_id', '=', 'taille.id')
-            ->where('produit.id', $idProduct)
+            ->where('produit.numero', $numProduct)
             ->get()->toArray();
         $produit['tarifs'] = $tarifs;
         return $produit;
