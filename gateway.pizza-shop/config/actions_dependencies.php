@@ -10,7 +10,7 @@ return[
     'guzzle.client' => function(\Psr\Container\ContainerInterface $c){
         return new \GuzzleHttp\Client(
             [
-                'base_uri' => 'http://api.pizza-shop:2080',
+                'base_uri' => 'api.pizza-shop',
                 'headers' => [
                     'Accept' => 'application/json',
                     'Origin' => '',
