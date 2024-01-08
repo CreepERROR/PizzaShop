@@ -11,9 +11,11 @@ class SignInAction extends AbstractAction
     public function __invoke(Request $request, Response $response, $args): Response
     {
         $guzzle = $this->container->get('guzzle.client');
-        $response = $guzzle->post('/signin', [
+        $res = $guzzle->post('/signin', [
             'json' => $request->getParsedBody()
         ]);
+        $res = $res->getBody()->getContents();
+        $response->getBody()->write($res);
         return $response;
     }
 }

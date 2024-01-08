@@ -27,4 +27,9 @@ return function(App $app) {
         ->setName('produit');
     $app->get('/categories/{id_categorie}/produits[/]', \pizzagataway\gate\app\actions\ListerProduitsParCategorieAction::class)
         ->setName('produits_par_categorie');
+
+
+
+    $app->post('/api/users/signin', SignInAction::class)->setName('signin');
+
 };

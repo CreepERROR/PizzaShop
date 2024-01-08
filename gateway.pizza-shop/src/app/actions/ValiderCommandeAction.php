@@ -13,9 +13,11 @@ class ValiderCommandeAction extends AbstractAction
     public function __invoke(Request $request, Response $response, $args): Response
     {
         $guzzle = $this->container->get('guzzle.client');
-        $response = $guzzle->post('/validerCommande', [
+        $res = $guzzle->post('/validerCommande', [
             'json' => $request->getParsedBody()
         ]);
+        $res = $res->getBody()->getContents();
+        $response->getBody()->write($res);
         return $response;
     }
 }

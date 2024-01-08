@@ -14,13 +14,11 @@ class ListerProduitsParCategorieAction extends AbstractAction
      */
     public function __invoke(Request $request, Response $response, $args): Response
     {
-        $catalogService = $this->container->get('catalog.service');
-        $products = $catalogService->getProductsByCategory($args['id_categorie']);
-        foreach ($products as $key => $product) {
-            $products[$key]['uri'] = "http://localhost:2080/produit/" . $product['id'];
-        }
-        $response->getBody()->write(json_encode($products));
-        return $response->withHeader('Content-Type', 'application/json');
+        $guzzle = $this->container->get('guzzle.client');
+        $res = $guzzle->get('/produits/categorie/' . $args['id_categorie']);
+        $res = $res->getBody()->getContents();
+        $response->getBody()->write($res);
+        return $response;
 
     }
 }
