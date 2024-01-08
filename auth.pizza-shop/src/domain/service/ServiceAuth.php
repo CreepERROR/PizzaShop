@@ -100,7 +100,26 @@ class ServiceAuth implements IServiceAuth
 
     public function signup($credentials)
     {
-        // TODO: Implement signup() method
+        $username = $credentials['username'];
+        $email = $credentials['email'];
+        $password = $credentials['password'];
+
+        $refreshToken = $this->provider->postUser($username, $password, $email);
+        echo $refreshToken;
+        if($refreshToken) {
+            $data = [
+                'username' => $refreshToken->username,
+                'email' => $refreshToken->email,
+
+            ];
+            $access_token = $this->managerJWT->createToken($data);
+            return [
+                'access_token' => $access_token,
+                'refresh_token' => $refreshToken->refresh_token
+            ];
+        }else{
+            return null;
+        }
     }
 
     public function activate($token)
