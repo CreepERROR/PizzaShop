@@ -24,6 +24,24 @@ services:
       - pizza-shop.commande.db
       - pizza-shop.catalogue.db
 
+  api.gateway:
+    image: 'canals/php:latest'
+    env_file: ./gate.env
+    ports:
+      - '3080:80'
+      - '1543:443'
+    volumes:
+        - ../gateway.pizza-shop/public:/var/www/html
+        - ../gateway.pizza-shop:/var/www
+    working_dir: /var/www/
+    networks:
+      pizza-shop.net:
+        aliases:
+          - gateway.pizza-shop.local
+    depends_on:
+      - api.pizza-shop
+      - api.pizza-auth
+
 
 
   # service sql pour le stockage des commandes -

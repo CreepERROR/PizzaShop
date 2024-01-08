@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints as Assert;
+use GuzzleHttp\Client;
+
 
 
 class CommandService extends Exception implements ICommandService
@@ -125,20 +127,45 @@ class CommandService extends Exception implements ICommandService
 
         foreach ($commandeDTO->getItems() as $item) {
             $numero = $item['numero'];
-            $taille = $item['taille'];
             $quantite = $item['quantite'];
-            $catalog = new CatalogService();
-            $itemBdd = $catalog->getInformations($numero, $taille);
-            $montantTotal += floatval($itemBdd['tarif']) * $item['quantite'];
-            $tailleBdd = Size::where('id', '=', $taille)->first()->toArray();
+            $clientCat = new Client([
+                'base_uri' => 'http://api.pizza-shop',
+                'timeout' => 15.0,
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Origin' => '*'
+                ]
+            ]);
+            $responseCat = $clientCat->request('GET', '/produit/'.$numero);
+            $codeCat = $responseCat->getStatusCode();
+            if ($codeCat != 200) {
+                throw new \Exception('Pas accès au produit');
+            } else {
+                $bodyRepCat = $responseCat->getBody()->getContents();
+                $bodyRepCat = stripslashes(html_entity_decode($bodyRepCat));
+                $bodyRepCat=json_decode($bodyRepCat,true);
+                $id = $bodyRepCat['id'];
+                $numero = $bodyRepCat['numero'];
+                $libelle = $bodyRepCat['libelle'];
+                foreach ($bodyRepCat['tarifs'] as $tarif) {
+                    if ($tarif['taille_id'] == $item['taille']) {
+                        $taille = $tarif['taille'];
+                        $prix = $tarif['tarif'];
+                    }
+                }
+            }
+
+            //$catalog = new CatalogService();
+            //$itemBdd = $catalog->getInformations($numero, $taille);
+            $montantTotal += floatval($tarif) * $quantite;
+            //$tailleBdd = Size::where('id', '=', $taille)->first()->toArray();
 
             // Ajoutez les informations de l'item au tableau $listeItems
             $listeItems[] = [
                 'numero' => $numero,
-                'libelle' => $itemBdd['libelle'],
+                'libelle' => $libelle,
                 'taille' => $taille,
-                'libelle_taille' => $tailleBdd['libelle'],
-                'tarif' => $itemBdd['tarif'],
+                'tarif' => $prix,
                 'quantite' => $quantite,
             ];
 
@@ -153,9 +180,6 @@ class CommandService extends Exception implements ICommandService
                 'type_livraison' => $commandeDTO->type_livraison,
             ]);
         $array = $listeItems;
-
-
-
         return new CommandeDTO($commandeDTO->mail_client, $commandeDTO->type_livraison, $array, $id, date('Y-m-d H:i:s'), $montantTotal, 1);
 
     }
