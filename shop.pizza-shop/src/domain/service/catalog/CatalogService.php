@@ -46,7 +46,7 @@ class CatalogService extends Exception implements ICatalogService
 
     public function getProduct($idProduct)
     {
-        $produit = Product::select('produit.id', 'produit.libelle', 'produit.description', 'produit.image', 'categorie.libelle')
+        $produit = Product::select('produit.id', 'produit.numero', 'produit.libelle', 'produit.description', 'produit.image', 'categorie.libelle')
             ->join('tarif', 'produit.id', '=', 'tarif.produit_id')
             ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
             ->where('produit.id', $idProduct)

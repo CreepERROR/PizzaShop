@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints as Assert;
+use GuzzleHttp\Client;
+
 
 
 class CommandService extends Exception implements ICommandService
@@ -127,18 +129,40 @@ class CommandService extends Exception implements ICommandService
             $numero = $item['numero'];
             $taille = $item['taille'];
             $quantite = $item['quantite'];
-            $catalog = new CatalogService();
-            $itemBdd = $catalog->getInformations($numero, $taille);
-            $montantTotal += floatval($itemBdd['tarif']) * $item['quantite'];
-            $tailleBdd = Size::where('id', '=', $taille)->first()->toArray();
+            $id = $item['id'];
+            $client = new Client([
+                'base_uri' => 'http://api.pizza-auth',
+                'timeout' => 15.0,
+            ]);
+            $responseCat = $client->request('GET', '/produits/'.$id);
+            $code = $responseCat->getStatusCode();
+            if ($code != 200) {
+                throw new \Exception('Validate Token sans succès');
+            } else {
+                $bodyResponse = $responseCat->getBody()->getContents();
+                $bodyResponse = stripslashes(html_entity_decode($bodyResponse));
+                $bodyResponse=json_decode($bodyResponse,true);
+                $id = $bodyResponse['id'];
+                $numero = $bodyResponse['numero'];
+                $libelle = $bodyResponse['libelle'];
+                $taille = $bodyResponse['taille'];
+                $libelle_taille = $bodyResponse['libelle_taille'];
+                $tarif = $bodyResponse['tarif'];
+                $quantite = $bodyResponse['quantite'];
+            }
+
+            //$catalog = new CatalogService();
+            //$itemBdd = $catalog->getInformations($numero, $taille);
+            $montantTotal += floatval($tarif) * $quantite;
+            //$tailleBdd = Size::where('id', '=', $taille)->first()->toArray();
 
             // Ajoutez les informations de l'item au tableau $listeItems
             $listeItems[] = [
                 'numero' => $numero,
-                'libelle' => $itemBdd['libelle'],
+                'libelle' => $libelle,
                 'taille' => $taille,
-                'libelle_taille' => $tailleBdd['libelle'],
-                'tarif' => $itemBdd['tarif'],
+                'libelle_taille' => $libelle_taille,
+                'tarif' => $tarif,
                 'quantite' => $quantite,
             ];
 
