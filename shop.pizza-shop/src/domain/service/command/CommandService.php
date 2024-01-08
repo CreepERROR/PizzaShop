@@ -127,28 +127,32 @@ class CommandService extends Exception implements ICommandService
 
         foreach ($commandeDTO->getItems() as $item) {
             $numero = $item['numero'];
-            $taille = $item['taille'];
             $quantite = $item['quantite'];
-            $id = $item['id'];
-            $client = new Client([
-                'base_uri' => 'http://api.pizza-auth',
+            $clientCat = new Client([
+                'base_uri' => 'http://api.pizza-shop',
                 'timeout' => 15.0,
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Origin' => '*'
+                ]
             ]);
-            $responseCat = $client->request('GET', '/produits/'.$id);
-            $code = $responseCat->getStatusCode();
-            if ($code != 200) {
-                throw new \Exception('Validate Token sans succès');
+            $responseCat = $clientCat->request('GET', '/produit/'.$numero);
+            $codeCat = $responseCat->getStatusCode();
+            if ($codeCat != 200) {
+                throw new \Exception('Pas accès au produit');
             } else {
-                $bodyResponse = $responseCat->getBody()->getContents();
-                $bodyResponse = stripslashes(html_entity_decode($bodyResponse));
-                $bodyResponse=json_decode($bodyResponse,true);
-                $id = $bodyResponse['id'];
-                $numero = $bodyResponse['numero'];
-                $libelle = $bodyResponse['libelle'];
-                $taille = $bodyResponse['taille'];
-                $libelle_taille = $bodyResponse['libelle_taille'];
-                $tarif = $bodyResponse['tarif'];
-                $quantite = $bodyResponse['quantite'];
+                $bodyRepCat = $responseCat->getBody()->getContents();
+                $bodyRepCat = stripslashes(html_entity_decode($bodyRepCat));
+                $bodyRepCat=json_decode($bodyRepCat,true);
+                $id = $bodyRepCat['id'];
+                $numero = $bodyRepCat['numero'];
+                $libelle = $bodyRepCat['libelle'];
+                foreach ($bodyRepCat['tarifs'] as $tarif) {
+                    if ($tarif['taille_id'] == $item['taille']) {
+                        $taille = $tarif['taille'];
+                        $prix = $tarif['tarif'];
+                    }
+                }
             }
 
             //$catalog = new CatalogService();
@@ -161,8 +165,7 @@ class CommandService extends Exception implements ICommandService
                 'numero' => $numero,
                 'libelle' => $libelle,
                 'taille' => $taille,
-                'libelle_taille' => $libelle_taille,
-                'tarif' => $tarif,
+                'tarif' => $prix,
                 'quantite' => $quantite,
             ];
 
@@ -177,9 +180,6 @@ class CommandService extends Exception implements ICommandService
                 'type_livraison' => $commandeDTO->type_livraison,
             ]);
         $array = $listeItems;
-
-
-
         return new CommandeDTO($commandeDTO->mail_client, $commandeDTO->type_livraison, $array, $id, date('Y-m-d H:i:s'), $montantTotal, 1);
 
     }
