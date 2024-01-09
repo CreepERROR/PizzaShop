@@ -23,7 +23,7 @@ class CreateCommandAction extends AbstractAction
 
                 // vérif présence access token ds header
                 if($request->getHeader('Authorization') == null){
-                    throw new Exception('No header');
+                    throw new Exception("Pas de token dans le header d'authorization");
                 }
                 $header = $request->getHeader('Authorization')[0];
                 $bearer = explode(' ', $header)[0];
@@ -36,10 +36,11 @@ class CreateCommandAction extends AbstractAction
                 $body = $request->getBody()->getContents();
                 $body = json_decode($body, true);
                 $refresh = $body['refresh_token'];
+
                 //var_dump($refresh);
 
             }catch (Exception $e) {
-                $response = $response->withStatus(401);
+                $response = $response->withStatus(400);
                 $response->getBody()->write($e->getMessage());
                 return $response->withHeader('Content-Type', 'application/json');
             }
