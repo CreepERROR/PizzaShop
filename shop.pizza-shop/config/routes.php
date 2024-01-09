@@ -2,9 +2,14 @@
 declare(strict_types=1);
 
 use pizzashop\shop\app\actions\AccederCommandeAction;
+use pizzashop\shop\app\actions\ValiderCommandeAction;
 use pizzashop\shop\app\actions\CreateCommandAction;
 use pizzashop\shop\app\actions\SignInAction;
 use pizzashop\shop\app\actions\SignUpAction;
+
+use pizzashop\shop\app\actions\ListerProduitsAction;
+use pizzashop\shop\app\actions\ConsulterProduitAction;
+use pizzashop\shop\app\actions\ListerProduitsParCategorieAction;
 
 use pizzashop\shop\models\Command;
 use Slim\App;
@@ -16,17 +21,17 @@ return function(App $app) {
 
     $app->get('/commandes/{id_commande}[/]', AccederCommandeAction::class)
         ->setName('commandes');
-    $app->patch('.../commande/{ID}', Command::class);
+    $app->patch('/commande/{id_commande}[/]', ValiderCommandeAction::class);
     $app->post('/createCommand', CreateCommandAction::class)->setName('createCommand');
     $app->post('/signin', SignInAction::class)->setName('signin');
     $app->post('/signup', SignUpAction::class)->setName('signup');
 
 
     // routes du catalogue
-    $app->get('/produits[/]', \pizzashop\shop\app\actions\ListerProduitsAction::class)
+    $app->get('/produits[/]', ListerProduitsAction::class)
         ->setName('produits');
-    $app->get('/produit/{num_produit}[/]', \pizzashop\shop\app\actions\ConsulterProduitAction::class)
+    $app->get('/produit/{num_produit}[/]', ConsulterProduitAction::class)
         ->setName('produit');
-    $app->get('/categories/{id_categorie}/produits[/]', \pizzashop\shop\app\actions\ListerProduitsParCategorieAction::class)
+    $app->get('/categories/{id_categorie}/produits[/]', ListerProduitsParCategorieAction::class)
         ->setName('produits_par_categorie');
 };
