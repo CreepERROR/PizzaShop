@@ -46,6 +46,12 @@ curl --location 'http://localhost:2080/signin' \
 }
 ] }'
 
+curl --request POST \
+  --url http://localhost:3080/api/users/signin \
+  --header 'Authorization: Basic Q2hhcmxlczptZHA=' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/8.3.0'
+
 curl --location 'http://localhost:2780/api/users/refresh' \
 --header 'Content-Type: text/plain' \
 --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvIiwic3ViIjoicGl6emEtc2hvcC5kYiIsImF1ZCI6InBpenphc2hvcGNvbXBvbmVudHMtYXBpLnBpenphLWF1dGgtMSIsImlhdCI6MTY5OTMwNTY3OCwiZXhwIjoxNjk5MzA5Mjc4LCJ1c2VybmFtZSI6IkFsaXhQZXJyb3QifQ.k04E-pJedwOp_6Os0_7Y9S6GtftqF_nEfu3lhJcmcsg' \
