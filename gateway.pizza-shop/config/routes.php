@@ -4,6 +4,7 @@ declare(strict_types=1);
 use pizzagataway\gate\app\actions\AccederCommandeAction;
 use pizzagataway\gate\app\actions\CreateCommandAction;
 use pizzagataway\gate\app\actions\SignInAction;
+use pizzagataway\gate\app\actions\SignUpAction;
 
 use pizzashop\shop\models\Command;
 use Slim\App;
@@ -18,6 +19,7 @@ return function(App $app) {
     $app->patch('.../commande/{ID}', Command::class);
     $app->post('/createCommand', CreateCommandAction::class)->setName('createCommand');
     $app->post('/signin', SignInAction::class)->setName('signin');
+    $app->post('/signup', SignUpAction::class)->setName('signup');
 
 
     // routes du catalogue
@@ -31,5 +33,5 @@ return function(App $app) {
 
 
     $app->post('/api/users/signin', SignInAction::class)->setName('signin');
-
+    $app->post('/api/users/signup', SignUpAction::class)->setName('signin');
 };
