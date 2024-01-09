@@ -15,7 +15,7 @@ class ListerProduitsParCategorieAction extends AbstractAction
     public function __invoke(Request $request, Response $response, $args): Response
     {
         $guzzle = $this->container->get('guzzle.client');
-        $res = $guzzle->get('/produits/categorie/' . $args['id_categorie']);
+        $res = $guzzle->get('/categories/' . $args['id_categorie'] .'/produits');
         $res = $res->getBody()->getContents();
         $response->getBody()->write($res);
         return $response;
