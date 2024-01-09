@@ -20,6 +20,7 @@ class CreateCommandAction extends AbstractAction
     {
         try {
             try{
+
                 // vérif présence access token ds header
                 if($request->getHeader('Authorization') == null){
                     throw new Exception('No header');

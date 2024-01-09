@@ -18,12 +18,36 @@ class CreateCommandAction extends AbstractAction
 
     public function __invoke(Request $request, Response $response, $args): Response
     {
-        $guzzle = $this->container->get('guzzle.client');
-        $res = $guzzle->post('/createCommand', [
-            'json' => $request->getParsedBody()
-        ]);
-        $res = $res->getBody()->getContents();
-        $response->getBody()->write($res);
-        return $response;
+
+
+        try {
+
+            $access = $request->getHeader('Authorization')[0];
+            $bodyReq = $request->getBody()->getContents();
+            $client = new Client([
+                'base_uri' => 'http://api.pizza-shop',
+                'timeout' => 15.0,
+            ]);
+            $responseCreate = $client->request('POST', '/createCommand', [
+                'headers' => [
+                    'Authorization' => $access,
+                    'Origin' => '*'
+                ],
+                'body' => $bodyReq
+            ]);
+
+            $res = $responseCreate->getBody()->getContents();
+            $response->getBody()->write($res);
+            return $response;
+        } catch (Exception $e){
+            $response = $response->withStatus(401);
+            $response->getBody()->write($e->getMessage());
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+
+
+
+
     }
 }
