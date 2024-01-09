@@ -48,7 +48,11 @@ class CommandService extends Exception implements ICommandService
             $log->error('invalidateCommand : ' . $e->getMessage());
             exit();
         }
-        return $this->readCommand($id);
+        $commande = [
+            'etat' => 'validee',
+            $this->readCommand($id)
+        ];
+        return $commande;
     }
 
     /**
