@@ -30,22 +30,6 @@ curl --location --request GET 'http://localhost:2780/api/users/validate' \
 "refresh_token": "ac590b521c41d3d4dd0c901b040d1b6317817b693a7b830b5f1d1e010e411a9a"
 }'
 
-
-curl --location 'http://localhost:2080/signin' \
---header 'Origin: *' \
---header 'Content-Type: text/plain' \
---header 'Authorization: Basic QWxpeFBlcnJvdDpBbGl4UGVycm90' \
---data-raw '{
-"refresh_token": "ac590b521c41d3d4dd0c901b040d1b6317817b693a7b830b5f1d1e010e411a9a",
-"mail_client": "miche@gmal.com", "type_livraison": 2,
-"items": [
-{
-"numero": 2,
-"taille": 1,
-"quantite": 1
-}
-] }'
-
 curl --request POST \
   --url http://localhost:3080/api/users/signin \
   --header 'Authorization: Basic Q2hhcmxlczptZHA=' \
