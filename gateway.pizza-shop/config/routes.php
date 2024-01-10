@@ -18,7 +18,7 @@ return function(App $app) {
     $app->get('/commandes/{id_commande}[/]', AccederCommandeAction::class)
         ->setName('commandes');
     $app->patch('/commande/{id_commande}[/]', ValiderCommandeAction::class);
-    $app->post('/createCommand', CreateCommandAction::class)->setName('createCommand');
+    $app->post('/commande', CreateCommandAction::class)->setName('createCommand');
     $app->post('/signin', SignInAction::class)->setName('signin');
     $app->post('/signup', SignUpAction::class)->setName('signup');
 
