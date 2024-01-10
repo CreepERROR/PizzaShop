@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use pizzagataway\gate\app\actions\AccederCommandeAction;
+use pizzagataway\gate\app\actions\ValiderCommandeAction;
 use pizzagataway\gate\app\actions\CreateCommandAction;
 use pizzagataway\gate\app\actions\SignInAction;
 use pizzagataway\gate\app\actions\SignUpAction;
@@ -16,7 +17,7 @@ return function(App $app) {
 
     $app->get('/commandes/{id_commande}[/]', AccederCommandeAction::class)
         ->setName('commandes');
-    $app->patch('.../commande/{ID}', Command::class);
+    $app->patch('/commande/{id_commande}[/]', ValiderCommandeAction::class);
     $app->post('/createCommand', CreateCommandAction::class)->setName('createCommand');
     $app->post('/signin', SignInAction::class)->setName('signin');
     $app->post('/signup', SignUpAction::class)->setName('signup');

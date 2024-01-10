@@ -22,9 +22,34 @@ class ValiderCommandeAction extends AbstractAction
             $etat = $requ['etat'];
             $serviceCommande = $this->container->get('command.service');
             $commande = $serviceCommande->validateCommand($id);
+            var_dump(is_null($commande));
+            //pq c jamais TRUE ALORS QUE Y A RIEN (qd mauvais id)
             if (!is_null($commande)) {
                 if ($commande['etat'] !== $etat) {
                     $response = $response->withStatus(400);
+                } else {
+                    $commandeFormated = [
+                        $commande,
+                        'links' => [
+                            'commandes' => [
+                                'href' => '/commandes/' // Utilisez l'URL relative directement
+                            ]
+                        ],
+                    ];
+
+                    $dataFormated = [
+                        'type' => 'ressource',
+                        'commande' => $commandeFormated
+                    ];
+
+                    // Convertir le tableau en JSON
+                    $json = json_encode($dataFormated);
+
+                    // Ajouter le contenu JSON à la réponse
+                    $response->getBody()->write($json);
+
+                    // Définir le type de contenu de la réponse comme JSON
+
                 }
             } else {
                 $response = $response->withStatus(404);
@@ -34,27 +59,6 @@ class ValiderCommandeAction extends AbstractAction
             throw new HttpInternalServerErrorException($request, $e->getMessage());
         }
 
-        $commandeFormated = [
-            $commande,
-            'links' => [
-                'commandes' => [
-                    'href' => '/commandes/' // Utilisez l'URL relative directement
-                ]
-            ],
-        ];
-
-        $dataFormated = [
-            'type' => 'ressource',
-            'commande' => $commandeFormated
-        ];
-
-        // Convertir le tableau en JSON
-        $json = json_encode($dataFormated);
-
-        // Ajouter le contenu JSON à la réponse
-        $response->getBody()->write($json);
-
-        // Définir le type de contenu de la réponse comme JSON
         return $response->withHeader('Content-Type', 'application/json');
     }
 }
