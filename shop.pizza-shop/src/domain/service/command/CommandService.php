@@ -31,7 +31,7 @@ class CommandService extends Exception implements ICommandService
     /**
      * Valide une commande en passant son état à VALIDE (2)
      * @param string $id
-     * @return CommandeDTO|void
+     * @return CommandeDTO|array
      */
     public function validateCommand(string $id)
     {

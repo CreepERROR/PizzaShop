@@ -22,9 +22,9 @@ class ValiderCommandeAction extends AbstractAction
             $etat = $requ['etat'];
             $serviceCommande = $this->container->get('command.service');
             $commande = $serviceCommande->validateCommand($id);
+            var_dump(is_null($commande));
+            //pq c jamais TRUE ALORS QUE Y A RIEN (qd mauvais id)
             if (!is_null($commande)) {
-                //var_dump($commande['etat']);
-                //var_dump($etat);
                 if ($commande['etat'] !== $etat) {
                     $response = $response->withStatus(400);
                 } else {
