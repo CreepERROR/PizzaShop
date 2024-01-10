@@ -16,6 +16,6 @@ class AccederCommandeAction extends AbstractAction
         $res = $guzzle->get('/commandes/' . $args['id_commande']);
         $res = $res->getBody()->getContents();
         $response->getBody()->write($res);
-        return $response;
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

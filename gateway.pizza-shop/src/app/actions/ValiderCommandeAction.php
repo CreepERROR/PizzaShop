@@ -18,6 +18,7 @@ class ValiderCommandeAction extends AbstractAction
         ]);
         $res = $res->getBody()->getContents();
         $response->getBody()->write($res);
+        $response->withHeader('Content-Type', 'application/json');
         return $response;
     }
 }
