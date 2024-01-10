@@ -15,20 +15,20 @@ return function(App $app) {
     //$app->post('/commandes[/]', \pizzagataway\gate\app\actions\CreerCommandeAction::class)
     //    ->setName('creer_commande');
 
-    $app->get('/commandes/{id_commande}[/]', AccederCommandeAction::class)
+    $app->get('/api/commandes/{id_commande}[/]', AccederCommandeAction::class)
         ->setName('commandes');
-    $app->patch('/commande/{id_commande}[/]', ValiderCommandeAction::class);
-    $app->post('/commande', CreateCommandAction::class)->setName('createCommand');
-    $app->post('/signin', SignInAction::class)->setName('signin');
-    $app->post('/signup', SignUpAction::class)->setName('signup');
+    $app->patch('/api/commande/{id_commande}[/]', ValiderCommandeAction::class);
+    $app->post('/api/commande', CreateCommandAction::class)->setName('createCommand');
+    $app->post('/api/signin', SignInAction::class)->setName('signin');
+    $app->post('/api/signup', SignUpAction::class)->setName('signup');
 
 
     // routes du catalogue
-    $app->get('/produits[/]', \pizzagataway\gate\app\actions\ListerProduitsAction::class)
+    $app->get('/api/produits[/]', \pizzagataway\gate\app\actions\ListerProduitsAction::class)
         ->setName('produits');
-    $app->get('/produit/{id_produit}[/]', \pizzagataway\gate\app\actions\ConsulterProduitAction::class)
+    $app->get('/papi/roduit/{id_produit}[/]', \pizzagataway\gate\app\actions\ConsulterProduitAction::class)
         ->setName('produit');
-    $app->get('/categories/{id_categorie}/produits[/]', \pizzagataway\gate\app\actions\ListerProduitsParCategorieAction::class)
+    $app->get('/api/categories/{id_categorie}/produits[/]', \pizzagataway\gate\app\actions\ListerProduitsParCategorieAction::class)
         ->setName('produits_par_categorie');
 
 
