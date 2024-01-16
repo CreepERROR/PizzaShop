@@ -66,6 +66,13 @@ class CatalogService extends Exception implements ICatalogService
             ->get()->toArray();
     }
 
+    public function filterProductByKeyword($keyword){
+        return Product::select('produit.id', 'produit.libelle', 'produit.description', 'produit.image', 'categorie.libelle')
+        ->join('categorie', 'produit.categorie_id', '=', 'categorie.id')
+        ->where('produit.categorie_id', $keyword)
+        ->get()->toArray();
+
+    }
 
 
 }
