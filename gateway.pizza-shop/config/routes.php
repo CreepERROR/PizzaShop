@@ -15,8 +15,7 @@ return function(App $app) {
     //$app->post('/commandes[/]', \pizzagataway\gate\app\actions\CreerCommandeAction::class)
     //    ->setName('creer_commande');
 
-    $app->get('/api/commandes/{id_commande}[/]', AccederCommandeAction::class)
-        ->setName('commandes');
+    $app->get('/api/commandes/{id_commande}[/]', AccederCommandeAction::class)->setName('commandes');
     $app->patch('/api/commande/{id_commande}[/]', ValiderCommandeAction::class);
     $app->post('/api/commande', CreateCommandAction::class)->setName('createCommand');
     $app->post('/api/signin', SignInAction::class)->setName('signin');
