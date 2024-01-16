@@ -1,38 +1,15 @@
 <?php
-
-
-require_once __DIR__ . '/vendor/autoload.php';
-
+use PhpAmqpLib\Message\AMQPMessage;
 use \PhpAmqpLib\Connection\AMQPStreamConnection;
 
-$connection = new \PhpAmqpLib\Connection\AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+$message_queue = 'nouvelles_commandes';
+$connection = new AMQPStreamConnection('rabbitmq', 5672, 'admin', 'admin');
 $channel = $connection->channel();
-
-
-$channel->queue_declare('nouvelles_commandes', false, true, false, false);
-
-echo "En attente de messages. Appuyez sur Ctrl+C pour quitter.\n";
-
-
-$callback = function ($msg) {
-
-    $message_data = json_decode($msg->body, true);
-
-
-    echo "Message reçu: " . json_encode($message_data) . "\n";
-
-    
-    $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
-};
-
-
-$channel->basic_consume('nouvelles_commandes', '', false, false, false, false, $callback);
-
-
-while (count($channel->callbacks)) {
-    $channel->wait();
-}
-
-
+$msg_body = [ 'commande aléatoire' ] ;
+$channel->basic_publish(new AMQPMessage(json_encode($msg_body)), 'pizzashop'
+    , 'nouvelle');
+print "[x] commande publiée : \n";
 $channel->close();
 $connection->close();
