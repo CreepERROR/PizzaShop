@@ -16,6 +16,7 @@ vendor/
 *.log
 .idea/*
 *.idea/
+rabbitmq.pizza-shop
 
 #conf
 vendor
