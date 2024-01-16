@@ -40,7 +40,7 @@ class CreateCommandAction extends AbstractAction
                 //var_dump($refresh);
 
             }catch (Exception $e) {
-                $response = $response->withStatus(400);
+                $response = $response->withStatus(405);
                 $response->getBody()->write($e->getMessage());
                 return $response->withHeader('Content-Type', 'application/json');
             }
@@ -62,7 +62,10 @@ class CreateCommandAction extends AbstractAction
                     ]);
                     $code = $responseValidate->getStatusCode();
                     if ($code != 200) {
-                        throw new \Exception('Validate Token sans succès');
+
+                        $response = $response->withStatus($code);
+                        return $response->withHeader('Content-Type', 'application/json');
+
                     } else {
                         $bodyResponse = $responseValidate->getBody()->getContents();
                         $bodyResponse = stripslashes(html_entity_decode($bodyResponse));
@@ -79,7 +82,14 @@ class CreateCommandAction extends AbstractAction
                         $serviceCommand = $this->container->get('command.service');
 
                         $validator = Validation::createValidator();
-                        $valide = $serviceCommand->validateDataCommand($validator, $commandeDTO);
+                        try{
+
+                            $valide = $serviceCommand->validateDataCommand($validator, $commandeDTO);
+                        }catch (Exception $e) {
+                            $response = $response->withStatus(405);
+                            $response->getBody()->write($e->getMessage());
+                            return $response->withHeader('Content-Type', 'application/json');
+                        }
                         $valide = $valide->getContent();
 
                         if (empty($valide)) {

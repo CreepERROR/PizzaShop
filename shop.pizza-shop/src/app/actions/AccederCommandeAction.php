@@ -19,6 +19,7 @@ class AccederCommandeAction extends AbstractAction
         try {
             $commande = $serviceCommande->readCommand($id);
         } catch (CommandeNotFoundException $e) {
+            $response-> withStatus(404);
             throw new HttpInternalServerErrorException($request, $e->getMessage());
         }
         $commandeFormated = [
