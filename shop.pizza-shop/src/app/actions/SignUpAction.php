@@ -19,7 +19,7 @@ class SignUpAction extends AbstractAction
             ]);
             $response = $client->request('POST', '/api/users/signup', [
                 'headers' => [
-                    'Authorization' => $request->getHeader('Authorization')
+                    'Content-Type' => 'application/json'
                 ],
                 'body' => $body
             ]);
