@@ -21,8 +21,11 @@ services:
         aliases:
           - api.pizza-shop.local
     depends_on:
-      - pizza-shop.commande.db
-      - pizza-shop.catalogue.db
+      rabbitmq:
+        condition: service_healthy
+
+
+
 
   api.gateway:
     image: 'canals/php:latest'
@@ -110,3 +113,19 @@ services:
       - pizza-shop.net
     volumes:
       - ../auth.pizza-shop/sql:/var/sql
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 8s
+      timeout: 30s
+      retries: 3
+    networks:
+      - pizza-shop.net
+    volumes:
+      - ../rabbitmq.pizza-shop:/var/lib/rabbitmq
+    env_file: ./rab.env
+    restart: always
