@@ -10,6 +10,7 @@ use pizzashop\shop\app\actions\SignUpAction;
 use pizzashop\shop\app\actions\ListerProduitsAction;
 use pizzashop\shop\app\actions\ConsulterProduitAction;
 use pizzashop\shop\app\actions\ListerProduitsParCategorieAction;
+use pizzashop\shop\app\actions\FiltrerProduitAction;
 
 use pizzashop\shop\models\Command;
 use Slim\App;
@@ -25,6 +26,7 @@ return function(App $app) {
     $app->post('/createCommand', CreateCommandAction::class)->setName('createCommand');
     $app->post('/signin', SignInAction::class)->setName('signin');
     $app->post('/signup', SignUpAction::class)->setName('signup');
+    
 
 
     // routes du catalogue
@@ -34,4 +36,6 @@ return function(App $app) {
         ->setName('produit');
     $app->get('/categories/{id_categorie}/produits[/]', ListerProduitsParCategorieAction::class)
         ->setName('produits_par_categorie');
+    $app->options('/produits/keyword=', FiltrerProduitAction::class)
+        ->setName('filtrer_par_produits');
 };
