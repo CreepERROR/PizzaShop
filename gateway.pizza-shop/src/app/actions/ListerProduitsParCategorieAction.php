@@ -18,7 +18,7 @@ class ListerProduitsParCategorieAction extends AbstractAction
         $res = $guzzle->get('/categories/' . $args['id_categorie'] .'/produits');
         $res = $res->getBody()->getContents();
         $response->getBody()->write($res);
-        return $response;
+        return $response->withHeader('Content-Type', 'application/json');
 
     }
 }

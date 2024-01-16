@@ -23,7 +23,7 @@ class CreateCommandAction extends AbstractAction
 
                 // vérif présence access token ds header
                 if($request->getHeader('Authorization') == null){
-                    throw new Exception('No header');
+                    throw new Exception("Pas de token dans le header d'authorization");
                 }
                 $header = $request->getHeader('Authorization')[0];
                 $bearer = explode(' ', $header)[0];
@@ -36,10 +36,11 @@ class CreateCommandAction extends AbstractAction
                 $body = $request->getBody()->getContents();
                 $body = json_decode($body, true);
                 $refresh = $body['refresh_token'];
+
                 //var_dump($refresh);
 
             }catch (Exception $e) {
-                $response = $response->withStatus(401);
+                $response = $response->withStatus(405);
                 $response->getBody()->write($e->getMessage());
                 return $response->withHeader('Content-Type', 'application/json');
             }
@@ -61,7 +62,10 @@ class CreateCommandAction extends AbstractAction
                     ]);
                     $code = $responseValidate->getStatusCode();
                     if ($code != 200) {
-                        throw new \Exception('Validate Token sans succès');
+
+                        $response = $response->withStatus($code);
+                        return $response->withHeader('Content-Type', 'application/json');
+
                     } else {
                         $bodyResponse = $responseValidate->getBody()->getContents();
                         $bodyResponse = stripslashes(html_entity_decode($bodyResponse));
@@ -78,7 +82,14 @@ class CreateCommandAction extends AbstractAction
                         $serviceCommand = $this->container->get('command.service');
 
                         $validator = Validation::createValidator();
-                        $valide = $serviceCommand->validateDataCommand($validator, $commandeDTO);
+                        try{
+
+                            $valide = $serviceCommand->validateDataCommand($validator, $commandeDTO);
+                        }catch (Exception $e) {
+                            $response = $response->withStatus(405);
+                            $response->getBody()->write($e->getMessage());
+                            return $response->withHeader('Content-Type', 'application/json');
+                        }
                         $valide = $valide->getContent();
 
                         if (empty($valide)) {

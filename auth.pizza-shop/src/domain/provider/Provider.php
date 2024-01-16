@@ -19,9 +19,7 @@ class Provider implements IProvider
     public function verifAuthCredentials(string $login, string $password)
     {
         $user = Users::where('username', $login)->first();
-        echo "step 1";
         if ($user && password_verify($password, $user->password)) {
-            echo "step 2";
             return $user; // Renvoie le refresh token
         }
         return null; // Renvoie null si l'authentification échoue

@@ -31,7 +31,7 @@ class CommandService extends Exception implements ICommandService
     /**
      * Valide une commande en passant son état à VALIDE (2)
      * @param string $id
-     * @return CommandeDTO|void
+     * @return CommandeDTO|array
      */
     public function validateCommand(string $id)
     {
@@ -41,14 +41,23 @@ class CommandService extends Exception implements ICommandService
             $commande->update(['etat' => 2]);
             $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Info));
             $log->pushHandler(new FirePHPHandler());
+            if (is_null($commande->first())) {
+                return null;
+            } else {
+                $commandeReturn = [
+                    'etat' => 'validee',
+                    $this->readCommand($id)
+                ];
+                return $commandeReturn;
+            }
             //$log->info('ValidateCommande: id = ' . $id . ' and state =' . $commande->etat);
         } catch (\Exception $e) {
             $log->pushHandler(new StreamHandler(__DIR__ . '/../../../../logs/Command/logService.log', Level::Error));
             $log->pushHandler(new FirePHPHandler());
             $log->error('invalidateCommand : ' . $e->getMessage());
-            exit();
+            return $e->getMessage();
         }
-        return $this->readCommand($id);
+
     }
 
     /**

@@ -55,7 +55,6 @@ class SignInAction extends AbstractAction
             $response = $response->withStatus(400);
             $response->getBody()->write($e->getMessage());
         }
-        var_dump($response->getStatusCode());
         return $response->withHeader('Content-Type', 'application/json');
 
     }

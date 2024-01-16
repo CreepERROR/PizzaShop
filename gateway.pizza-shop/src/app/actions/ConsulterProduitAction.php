@@ -14,6 +14,6 @@ class ConsulterProduitAction extends AbstractAction
         $res = $guzzle->get('/produit/' . $args['id_produit']);
         $res = $res->getBody()->getContents();
         $response->getBody()->write($res);
-        return $response;
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

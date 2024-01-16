@@ -38,7 +38,7 @@ class CreateCommandAction extends AbstractAction
 
             $res = $responseCreate->getBody()->getContents();
             $response->getBody()->write($res);
-            return $response;
+            return $response->withHeader('Content-Type', 'application/json');
         } catch (Exception $e){
             $response = $response->withStatus(401);
             $response->getBody()->write($e->getMessage());
