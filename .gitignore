@@ -16,6 +16,7 @@ vendor/
 *.log
 .idea/*
 *.idea/
+rabbitmq.pizza-shop
 
 #conf
 vendor
@@ -64,3 +65,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+rabbitmq.pizza-shop/mnesia
+rabbitmq.pizza-shop/.erlang.cookie
