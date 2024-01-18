@@ -1,6 +1,7 @@
 <?php
 
 namespace pizzashop\shop\app\actions;
+
 use ErrorException;
 use Exception;
 use pizzashop\shop\app\actions\AbstractAction;
@@ -22,7 +23,24 @@ class ValiderCommandeAction extends AbstractAction
             $etat = $requ['etat'];
             $serviceCommande = $this->container->get('command.service');
             $commande = $serviceCommande->validateCommand($id);
-            //pq c jamais TRUE ALORS QUE Y A RIEN (qd mauvais id)
+            while (true) {
+
+
+                try {
+                    $rmqConnexion = $this->container->get('rabbitmq.connexion');
+                    $rmqChannel = $this->container->get('rabbitmq.channel');
+                    $rmqMessage = $this->container->get('rabbitmq.message');
+                    $rmqMessage->setBody(json_encode($commande));
+                    $rmqChannel->basic_publish($rmqMessage, 'pizzashop', 'nouvelle');
+                    $rmqChannel->close();
+                    $rmqConnexion->close();
+                } catch (Exception $e) {
+                    $response = $response->withStatus(400);
+                    $response->getBody()->write('Erreur RabbitMQ     :    ' . $e->getMessage());
+                }
+            }
+
+            //pq c jamais TRUE ALO  RS QUE Y A RIEN (qd mauvais id)
             if (!is_null($commande)) {
                 if ($commande['etat'] !== $etat) {
                     $response = $response->withStatus(400);
