@@ -113,6 +113,7 @@ services:
       - pizza-shop.net
     volumes:
       - ../auth.pizza-shop/sql:/var/sql
+      - ../auth.pizza-shop/sql:/docker-entrypoint-initdb.d
   rabbitmq:
     image: rabbitmq:3-management
     ports:
