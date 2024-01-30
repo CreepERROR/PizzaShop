@@ -1,4 +1,4 @@
-const express = require ('express');
+import ('express');
 let router = express.Router();
 
 let CommandesController = require('../controllers/commande.controller')
