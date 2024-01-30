@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from "helmet";
+import catchAllErrors from "../domain/errors/catchAllErrors.js";
 import CommandeRoutes from './routes/CommandeRoutes.js';
 
 const app = express();
-const port = process.env.PORT || 3000;
 app.use(express.json());
 
 //midleware
@@ -14,7 +14,7 @@ app.use("/commandes", CommandeRoutes);
 
 
 
-app.listen(port, () =>
-    console.log(`app listening on port ${port}!`
-    )
-);
+app.use(catch404Errors);
+app.use(catchAllErrors);
+
+export default app;
