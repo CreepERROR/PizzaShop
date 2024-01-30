@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from "helmet";
+import CommandeRoutes from './routes/CommandeRoutes.js';
 
-var router = express.Router();
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
@@ -10,10 +10,9 @@ app.use(express.json());
 //midleware
 app.use(cors());
 app.use(helmet());
+app.use("/commandes", CommandeRoutes);
 
-//routes
-app.get('/', (req, res) =>
-    res.send('Hello World!'));
+
 
 app.listen(port, () =>
     console.log(`app listening on port ${port}!`
