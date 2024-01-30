@@ -8,5 +8,4 @@ export default async function getCommandeAction(req, res, next) {
     }catch (e){
         next(404);
     }
-
 }

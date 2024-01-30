@@ -1,10 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from "helmet";
+import catchAllErrors from "../domain/errors/catchAllErrors.js";
 
-var router = express.Router();
 const app = express();
-const port = process.env.PORT || 3000;
 app.use(express.json());
 
 //midleware
@@ -15,7 +14,7 @@ app.use(helmet());
 app.get('/', (req, res) =>
     res.send('Hello World!'));
 
-app.listen(port, () =>
-    console.log(`app listening on port ${port}!`
-    )
-);
+app.use(catch404Errors);
+app.use(catchAllErrors);
+
+export default app;

@@ -1,6 +1,4 @@
-export default function catchAllErrors(err, req, res, next) {
-    if(res.headersSent){
-        return next(err);
-    }
+const catchAllErrors = (err, req, res, next) => {
     res.sendStatus(err);
 };
+export default catchAllErrors;

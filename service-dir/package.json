@@ -2,8 +2,8 @@
   "name": "api.prod.pizza-shop",
   "type": "module",
   "scripts": {
-    "start": "node ./src/server.js",
-    "watch": "NODE_ENV=development nodemon ./src/server.js"
+    "start": "node infrastructure/server.js",
+    "watch": "NODE_ENV=development nodemon --legacy-watch infrastructure/server.js"
   },
   "dependencies": {
     "amqplib": "^0.10.3",
