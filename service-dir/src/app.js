@@ -14,7 +14,7 @@ app.use("/commandes", CommandeRoutes);
 
 
 
-app.use(catch404Errors);
+//app.use(catch404Errors);
 app.use(catchAllErrors);
 
 export default app;
