@@ -14,9 +14,9 @@ async function getCommandes() {
   }
 }
 
-async function changeState(commande, state) {
+async function changeState(commandeId, state) {
   try {
-    const result = await db('commande').update({ etat: state }).where({ id: commande });
+    const result = await db('commande').update({ etape: state }).where({ id: commande });
     return result;
   } catch (err) {
     console.error(err);
@@ -24,4 +24,4 @@ async function changeState(commande, state) {
   }
 }
 
-export { getCommandes };
+export { getCommandes, changeState };
