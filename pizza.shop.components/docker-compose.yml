@@ -141,7 +141,7 @@ services:
     networks:
       - service.net
     working_dir: /usr/app
-    command: sh -c "npm i && npm run dev watch" #for development only
+    command: sh -c "npm i && npm run watch" #for development only
     #command: sh -c "npm i && npm start" #for production only
     volumes:
       - ../service-dir:/usr/app
