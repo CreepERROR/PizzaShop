@@ -1,7 +1,7 @@
-import ('express');
+import express from 'express';
 let router = express.Router();
 
-let CommandesController = require('../controllers/commande.controller')
+let CommandController = require('../controllers/commande.controller')
 
 router.get('/commandes', CommandesController.getCommande)
 
