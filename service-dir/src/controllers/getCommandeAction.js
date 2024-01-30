@@ -1,4 +1,4 @@
-import CommandeService from '../services/commandeService';
+import CommandeService from '../services/CommandeService.js';
 
 export default async function getCommandeAction(req, res, next) {
     try{
