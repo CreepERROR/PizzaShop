@@ -163,3 +163,25 @@ services:
     volumes:
         - ../service-dir/sql:/var/sql
         - ../service-dir/sql:/docker-entrypoint-initdb.d
+
+
+  version: '3'
+
+  services:
+    websocket-service:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - "3000:3000"
+      depends_on:
+        - rabbitmq
+
+    rabbitmq:
+      image: "rabbitmq:3-management"
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      environment:
+        RABBITMQ_DEFAULT_USER: "guest"
+        RABBITMQ_DEFAULT_PASS: "guest"
