@@ -1,15 +1,20 @@
 import express from 'express';
 let router = express.Router();
-import getCommandeAction from '../controllers/getCommandeAction.js';
-import changeStateAction from '../controllers/changeStateAction.js';
+import CommandeService from '../services/CommandeService.js';
+import GetCommandesAction from '../controllers/GetCommandesAction.js';
+import ChangeStateAction from '../controllers/ChangeStateAction.js';
+
+const commandeService = new CommandeService();
+const getCommandeAction= new GetCommandesAction(commandeService);
 router
     .route('/')
-    .get(getCommandeAction)
+    .get(getCommandeAction.execute.bind(getCommandeAction))
     .all((req, res, next) => next(405));
 
+const changeStateAction = new ChangeStateAction(commandeService);
 router
     .route('/:id/state')
-    .patch(changeStateAction)
+    .patch(changeStateAction.execute.bind(changeStateAction))
     .all((req, res, next) => next(405));
 
 export default router;
