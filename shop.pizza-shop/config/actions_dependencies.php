@@ -1,5 +1,8 @@
 <?php
 
+use \Psr\Container\ContainerInterface;
+use \PhpAmqpLib\Connection;
+
 return[
   'command.service' => function(\Psr\Container\ContainerInterface $c){
       return new \pizzashop\shop\domain\service\command\CommandService();
@@ -15,5 +18,8 @@ return[
     },
     'rabbitmq.message' => function(\Psr\Container\ContainerInterface $c){
         return new \PhpAmqpLib\Message\AMQPMessage();
+    },
+    'rabbitmq.suivi_commandes' => function(\Psr\Container\ContainerInterface $c){
+        return $c->get('pizzashop.suivi')->channel();
     },
 ];
