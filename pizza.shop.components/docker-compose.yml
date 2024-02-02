@@ -163,5 +163,18 @@ services:
     volumes:
         - ../service-dir/sql:/var/sql
         - ../service-dir/sql:/docker-entrypoint-initdb.d
-     
 
+  webSocket.service:
+    image: node:alpine
+    networks:
+      - service.net
+    working_dir: /usr/app
+    command: sh -c "npm i && npm run watch" #for development only
+    #command: sh -c "npm i && npm start" #for production only
+    volumes:
+      - ../WebSocket:/usr/app
+    ports:
+      - "3334:3000"
+    environment:
+      - "PORT: 3334"
+      - "NODE_ENV: development"
