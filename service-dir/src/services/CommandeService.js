@@ -7,8 +7,7 @@ const db = knex(config.development);
 export default class CommandeService {
   async getCommandes() {
     try {
-      const result = await db.select( '*').from('commande');
-      return result;
+      return await db.select('*').from('commande');
     } catch (err) {
       console.error(err);
       throw new Error("Impossible d'accéder aux commandes");

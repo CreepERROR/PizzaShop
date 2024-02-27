@@ -5,10 +5,10 @@ import GetCommandesAction from '../controllers/GetCommandesAction.js';
 import ChangeStateAction from '../controllers/ChangeStateAction.js';
 
 const commandeService = new CommandeService();
-const getCommandeAction= new GetCommandesAction(commandeService);
+const getCommandesAction= new GetCommandesAction(commandeService);
 router
     .route('/')
-    .get(getCommandeAction.execute.bind(getCommandeAction))
+    .get(getCommandesAction.execute.bind(getCommandesAction))
     .all((req, res, next) => next(405));
 
 const changeStateAction = new ChangeStateAction(commandeService);
