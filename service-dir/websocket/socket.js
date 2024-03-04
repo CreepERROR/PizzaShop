@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 const amqp = require('amqplib/callback_api');
 
-const server = new WebSocket.Server({ port: 3000, clientTracking: true });
+const server = new WebSocket.Server({ port: 3034, clientTracking: true });
 const clients = new Map();
 
 amqp.connect('amqp://localhost', (err, connection) => {
